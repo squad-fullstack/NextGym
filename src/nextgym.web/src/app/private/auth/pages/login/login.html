@@ -1,0 +1,65 @@
+<main class="min-h-screen w-full bg-[#f8fafc] flex items-center justify-center p-4">
+  <div class="w-full max-w-[420px] bg-white rounded-2xl p-8 shadow-sm border border-slate-100 flex flex-col items-center">
+    
+    <!-- Logo & Header -->
+    <header class="text-center mb-8">
+      <h1 class="text-2xl font-bold tracking-tight text-[#0f172a] flex items-center justify-center gap-0.5">
+        nextgym<span class="text-[#10b981] text-3xl leading-none">.</span>
+      </h1>
+      <p class="text-sm text-slate-500 mt-1.5 font-normal">
+        Acesse sua conta para treinar
+      </p>
+    </header>
+
+    <!-- Formulário de Login -->
+    <form (ngSubmit)="onSubmit()" class="w-full space-y-5">
+      <!-- Campo E-mail -->
+      <div class="space-y-1.5 text-left">
+        <label for="email" class="block text-sm font-medium text-slate-700">
+          E-mail
+        </label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="seu@email.com"
+          class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition"
+          required
+        />
+      </div>
+
+      <!-- Campo Senha -->
+      <div class="space-y-1.5 text-left">
+        <label for="password" class="block text-sm font-medium text-slate-700">
+          Senha
+        </label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="••••••••"
+          class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition"
+          required
+        />
+      </div>
+
+      <!-- Botão Entrar -->
+      <button
+        type="submit"
+        class="w-full py-3 px-4 bg-[#111827] hover:bg-[#1f2937] text-white text-sm font-medium rounded-lg transition-colors duration-150 mt-2"
+      >
+        Entrar
+      </button>
+    </form>
+
+    <!-- Esqueci Minha Senha -->
+    <div class="mt-6 text-center">
+      <a href="#" class="text-xs font-medium text-slate-600 hover:text-slate-900 transition">
+        Esqueceu sua senha?
+      </a>
+    </div>
+
+  </div>
+</main>

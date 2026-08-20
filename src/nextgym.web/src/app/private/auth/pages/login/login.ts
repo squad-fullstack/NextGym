@@ -1,18 +1,39 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { CommonModule      } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { RouterLink        } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule,
+            ReactiveFormsModule,
+            RouterLink], 
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrls: ['./login.css']
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
+  private fb = inject(FormBuilder);
 
-  onSubmit(): void {
-    console.log('Login submetido:', { email: this.email, password: this.password });
+  loginForm = this.fb.group({
+    email:    ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
+  });
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+    console.log('Formulário pronto para o back', this.loginForm.value)
+    } 
+    else {
+    this.loginForm.markAllAsTouched();
+      }
+  }
+
+  get emailControl() {
+    return this.loginForm.get('email');
+  }
+
+  get passwordControl() {
+    return this.loginForm.get('password');
   }
 }

@@ -1,65 +1,46 @@
-<main class="min-h-screen w-full bg-[#f8fafc] flex items-center justify-center p-4">
-  <div class="w-full max-w-[420px] bg-white rounded-2xl p-8 shadow-sm border border-slate-100 flex flex-col items-center">
+<section class="login-section">
+  <h1 class="sr-only">Faça login na sua conta NextGym</h1>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
     
-    <!-- Logo & Header -->
-    <header class="text-center mb-8">
-      <h1 class="text-2xl font-bold tracking-tight text-[#0f172a] flex items-center justify-center gap-0.5">
-        nextgym<span class="text-[#10b981] text-3xl leading-none">.</span>
-      </h1>
-      <p class="text-sm text-slate-500 mt-1.5 font-normal">
-        Acesse sua conta para treinar
-      </p>
-    </header>
-
-    <!-- Formulário de Login -->
-    <form (ngSubmit)="onSubmit()" class="w-full space-y-5">
-      <!-- Campo E-mail -->
-      <div class="space-y-1.5 text-left">
-        <label for="email" class="block text-sm font-medium text-slate-700">
-          E-mail
-        </label>
-        <input
-          id="email"
-          type="email"
-          [(ngModel)]="email"
-          name="email"
-          placeholder="seu@email.com"
-          class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition"
-          required
-        />
-      </div>
-
-      <!-- Campo Senha -->
-      <div class="space-y-1.5 text-left">
-        <label for="password" class="block text-sm font-medium text-slate-700">
-          Senha
-        </label>
-        <input
-          id="password"
-          type="password"
-          [(ngModel)]="password"
-          name="password"
-          placeholder="••••••••"
-          class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition"
-          required
-        />
-      </div>
-
-      <!-- Botão Entrar -->
-      <button
-        type="submit"
-        class="w-full py-3 px-4 bg-[#111827] hover:bg-[#1f2937] text-white text-sm font-medium rounded-lg transition-colors duration-150 mt-2"
+    <div class="input-group">
+      <label for="email">E-mail</label>
+      <input 
+        type="email" 
+        id="email" 
+        formControlName="email" 
+        placeholder="seu@email.com"
+        [attr.aria-invalid]="emailControl?.invalid && emailControl?.touched ? true : null"
+        aria-describedby="email-error"
       >
-        Entrar
-      </button>
-    </form>
-
-    <!-- Esqueci Minha Senha -->
-    <div class="mt-6 text-center">
-      <a href="#" class="text-xs font-medium text-slate-600 hover:text-slate-900 transition">
-        Esqueceu sua senha?
-      </a>
+      <span *ngIf="emailControl?.invalid && emailControl?.touched" id="email-error" class="error-message">
+        <span *ngIf="emailControl?.errors?.['required']">O e-mail é obrigatório.</span>
+        <span *ngIf="emailControl?.errors?.['email']">Digite um e-mail válido.</span>
+      </span>
     </div>
 
-  </div>
-</main>
+    <div class="input-group">
+      <label for="password">Senha</label>
+      <input 
+        type="password" 
+        id="password" 
+        formControlName="password" 
+        placeholder="********"
+        [attr.aria-invalid]="passwordControl?.invalid && passwordControl?.touched ? true : null"
+        aria-describedby="password-error"
+      >
+
+      <span   *ngIf="passwordControl?.invalid && passwordControl?.touched" id="password-error" class="error-message">
+        <span *ngIf="passwordControl?.errors?.['required']">A senha é obrigatória.</span>
+        <span *ngIf="passwordControl?.errors?.['minlength']">A senha deve ter pelo menos 6 caracteres.</span>
+      </span>
+    </div>
+
+    <button type="submit" class="btn-primary">Entrar</button>
+
+    <div class="forgot-password-container">
+      <a routerLink="/auth/recuperar-senha" class="forgot-password-link">Esqueceu sua senha?</a>
+    </div>
+
+  </form>
+</section>

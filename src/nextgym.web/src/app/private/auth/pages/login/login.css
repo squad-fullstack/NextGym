@@ -78,18 +78,17 @@ input:focus-visible {
 
 .forgot-password-link:focus-visible {
   outline: 2px solid #0f172a;
-  outline-offset: 4px; /* Afasta a linha de foco do texto */
+  outline-offset: 4px;
   border-radius: 2px;
 }
 
-/* Estilo para a mensagem de erro */
 .error-message {
-  color: #dc2626; /* Vermelho escuro para manter bom contraste */
+  color: #dc2626;
   font-size: 0.875rem;
   font-weight: 500;
   margin-top: 0.25rem;
 }
-/* Opcional: Borda vermelha no input quando houver erro */
+
 input[aria-invalid="true"] {
   border-color: #dc2626;
 }

@@ -96,3 +96,26 @@ input[aria-invalid="true"] {
 input[aria-invalid="true"]:focus-visible {
   box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
 }
+
+.register-container {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.register-link {
+  color: #0f172a;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}
+
+.register-link:focus-visible {
+  outline: 2px solid #0f172a;
+  outline-offset: 4px;
+  border-radius: 2px;
+}

@@ -1,22 +1,16 @@
 import { Routes } from '@angular/router';
-import { AuthLayout } from './core/layouts/auth-layout/auth-layout';
-import { LoginComponent } from './private/auth/pages/login/login';
 
 export const routes: Routes = [
   {
-    path: 'auth',
-    component: AuthLayout,
-    children: [
-      { path: 'login', component: LoginComponent },
-    ]
+    path: 'cadastro-cliente',
+    loadComponent: () =>
+      import(
+        './private/auth/pages/cadastro-cliente/cadastro-cliente.component'
+      ).then((m) => m.CadastroClienteComponent),
   },
   {
-    path: '', 
-    redirectTo: 'auth/login', 
-    pathMatch: 'full' 
+    path: '',
+    redirectTo: 'cadastro-cliente',
+    pathMatch: 'full',
   },
-  {
-    path: '**',
-    redirectTo: 'auth/login'
-  }
 ];

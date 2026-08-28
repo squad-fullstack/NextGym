@@ -12,7 +12,7 @@ import { RouterLink        } from '@angular/router';
   templateUrl: './Cadastro-Assistente.html',
   styleUrls: ['./Cadastro-Assistente.css']
 })
-export class CadastroComponent {
+export class CadastroAssistenteComponent {
   private fb = inject(FormBuilder);
 
 }

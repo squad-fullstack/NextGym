@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-cadastro-cliente',
+  selector: 'app-matricula-aluno',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './cadastro-cliente.component.html',
-  styleUrls: ['./cadastro-cliente.component.css']
+  templateUrl: './Matricula-Aluno.html',
+  styleUrls: ['./Matricula-Aluno.css']
 })
-export class CadastroClienteComponent {
+export class MatriculaAlunoComponent {
   private fb = inject(FormBuilder);
 
   cadastroForm: FormGroup = this.fb.group({

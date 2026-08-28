@@ -39,12 +39,12 @@
     <button type="submit" class="btn-primary">Entrar</button>
 
     <div class="forgot-password-container">
-      <a [routerLink]="['/auth/cadastro']" class="register-link">Cadastre-se aqui</a>
+      <a routerLink="/auth/recuperar-senha" class="forgot-password-link">Esqueceu sua senha?</a>
     </div>
     
     <div class="register-container">
       <p>Ainda não tem conta? 
-        <a routerLink="/auth/cadastro" class="register-link">Cadastre-se aqui</a>
+        <a [routerLink]="['/auth/cadastro']" class="register-link">Cadastre-se aqui</a>
       </p>
     </div>
 

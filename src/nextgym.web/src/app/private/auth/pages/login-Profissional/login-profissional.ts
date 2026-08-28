@@ -9,10 +9,10 @@ import { RouterLink        } from '@angular/router';
   imports: [CommonModule,
             ReactiveFormsModule,
             RouterLink], 
-  templateUrl: './login.html',
-  styleUrls: ['./login.css']
+  templateUrl: './login-profissional.html',
+  styleUrls: ['./login-profissional.css']
 })
-export class LoginComponent {
+export class LoginProfissionalComponent {
   private fb = inject(FormBuilder);
 
   loginForm = this.fb.group({

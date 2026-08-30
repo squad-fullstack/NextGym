@@ -2,6 +2,11 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: 'boas-vindas',
+    loadComponent: () =>
+      import('./private/auth/pages/boas-vindas/boas-vindas').then((m) => m.BoasVindas),
+  },
+  {
     path: 'cadastro-cliente',
     loadComponent: () =>
       import(
@@ -10,7 +15,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'cadastro-cliente',
+    redirectTo: 'boas-vindas',
     pathMatch: 'full',
   },
-];
+]

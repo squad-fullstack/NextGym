@@ -3,6 +3,17 @@
 
   <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()" class="cadastro-form">
     
+    <!-- Alerta de erro vindo da API (E-mail/CREF já existente, etc.) -->
+    <div 
+      *ngIf="errorMessage" 
+      role="alert" 
+      aria-live="assertive" 
+      class="error-message" 
+      style="margin-bottom: 1rem; font-weight: bold;"
+    >
+      {{ errorMessage }}
+    </div>
+
     <!-- Campo Nome -->
     <div class="input-group">
       <label for="nome">Nome</label>
@@ -14,24 +25,25 @@
         [attr.aria-invalid]="nomeControl?.invalid && nomeControl?.touched ? true : null"
         aria-describedby="nome-error"
       >
-      <span *ngIf="nomeControl?.invalid && nomeControl?.touched" id="nome-error" class="error-message">
+      <span *ngIf="nomeControl?.invalid && nomeControl?.touched" id="nome-error" class="error-message" role="alert">
         <span *ngIf="nomeControl?.errors?.['required']">O nome é obrigatório.</span>
+        <span *ngIf="nomeControl?.errors?.['minlength']">O nome deve ter no mínimo 3 caracteres.</span>
       </span>
     </div>
 
-    <!-- Campo RA -->
+    <!-- Campo CREF (Substituindo RA para bater com a entidade do backend) -->
     <div class="input-group">
-      <label for="ra">RA</label>
+      <label for="cref">CREF</label>
       <input 
         type="text" 
-        id="ra" 
-        formControlName="ra" 
-        placeholder="Digite seu RA"
-        [attr.aria-invalid]="raControl?.invalid && raControl?.touched ? true : null"
-        aria-describedby="ra-error"
+        id="cref" 
+        formControlName="cref" 
+        placeholder="Digite seu CREF (ex: 123456-G/SP)"
+        [attr.aria-invalid]="crefControl?.invalid && crefControl?.touched ? true : null"
+        aria-describedby="cref-error"
       >
-      <span *ngIf="raControl?.invalid && raControl?.touched" id="ra-error" class="error-message">
-        <span *ngIf="raControl?.errors?.['required']">O RA é obrigatório.</span>
+      <span *ngIf="crefControl?.invalid && crefControl?.touched" id="cref-error" class="error-message" role="alert">
+        <span *ngIf="crefControl?.errors?.['required']">O CREF é obrigatório.</span>
       </span>
     </div>
 
@@ -46,7 +58,7 @@
         [attr.aria-invalid]="emailControl?.invalid && emailControl?.touched ? true : null"
         aria-describedby="email-error"
       >
-      <span *ngIf="emailControl?.invalid && emailControl?.touched" id="email-error" class="error-message">
+      <span *ngIf="emailControl?.invalid && emailControl?.touched" id="email-error" class="error-message" role="alert">
         <span *ngIf="emailControl?.errors?.['required']">O e-mail é obrigatório.</span>
         <span *ngIf="emailControl?.errors?.['email']">Digite um e-mail válido.</span>
       </span>
@@ -54,22 +66,30 @@
 
     <!-- Campo Senha -->
     <div class="input-group">
-      <label for="password">Senha</label>
+      <label for="senha">Senha</label>
       <input 
         type="password" 
-        id="password" 
-        formControlName="password" 
+        id="senha" 
+        formControlName="senha" 
         placeholder="********"
-        [attr.aria-invalid]="passwordControl?.invalid && passwordControl?.touched ? true : null"
-        aria-describedby="password-error"
+        [attr.aria-invalid]="senhaControl?.invalid && senhaControl?.touched ? true : null"
+        aria-describedby="senha-error"
       >
-      <span *ngIf="passwordControl?.invalid && passwordControl?.touched" id="password-error" class="error-message">
-        <span *ngIf="passwordControl?.errors?.['required']">A senha é obrigatória.</span>
-        <span *ngIf="passwordControl?.errors?.['minlength']">A senha deve ter pelo menos 6 caracteres.</span>
+      <span *ngIf="senhaControl?.invalid && senhaControl?.touched" id="senha-error" class="error-message" role="alert">
+        <span *ngIf="senhaControl?.errors?.['required']">A senha é obrigatória.</span>
+        <span *ngIf="senhaControl?.errors?.['minlength']">A senha deve ter pelo menos 6 caracteres.</span>
       </span>
     </div>
 
-    <button type="submit" class="btn-primary">Cadastrar</button>
+    <!-- Botão com estado de carregamento -->
+    <button 
+      type="submit" 
+      class="btn-primary" 
+      [disabled]="isLoading"
+      [attr.aria-busy]="isLoading"
+    >
+      {{ isLoading ? 'Cadastrando...' : 'Cadastrar' }}
+    </button>
 
     <div class="register-container">
       <p>Já possui uma conta? 

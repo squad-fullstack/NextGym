@@ -3,6 +3,15 @@
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
     
+    <div 
+      *ngIf="errorMessage" 
+      role="alert" 
+      aria-live="assertive" 
+      class="error-message global-error"
+    >
+      {{ errorMessage }}
+    </div>
+
     <div class="input-group">
       <label for="email">E-mail</label>
       <input 
@@ -13,7 +22,7 @@
         [attr.aria-invalid]="emailControl?.invalid && emailControl?.touched ? true : null"
         aria-describedby="email-error"
       >
-      <span *ngIf="emailControl?.invalid && emailControl?.touched" id="email-error" class="error-message">
+      <span *ngIf="emailControl?.invalid && emailControl?.touched" id="email-error" class="error-message" role="alert">
         <span *ngIf="emailControl?.errors?.['required']">O e-mail é obrigatório.</span>
         <span *ngIf="emailControl?.errors?.['email']">Digite um e-mail válido.</span>
       </span>
@@ -30,13 +39,20 @@
         aria-describedby="password-error"
       >
 
-      <span   *ngIf="passwordControl?.invalid && passwordControl?.touched" id="password-error" class="error-message">
+      <span *ngIf="passwordControl?.invalid && passwordControl?.touched" id="password-error" class="error-message" role="alert">
         <span *ngIf="passwordControl?.errors?.['required']">A senha é obrigatória.</span>
         <span *ngIf="passwordControl?.errors?.['minlength']">A senha deve ter pelo menos 6 caracteres.</span>
       </span>
     </div>
 
-    <button type="submit" class="btn-primary">Entrar</button>
+    <button 
+      type="submit" 
+      class="btn-primary" 
+      [disabled]="isLoading"
+      [attr.aria-busy]="isLoading"
+    >
+      {{ isLoading ? 'Entrando...' : 'Entrar' }}
+    </button>
 
     <div class="forgot-password-container">
       <a routerLink="/auth/recuperar-senha" class="forgot-password-link">Esqueceu sua senha?</a>

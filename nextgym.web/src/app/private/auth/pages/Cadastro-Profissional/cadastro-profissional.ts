@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
-  selector: 'app-cadastro',
+  selector: 'app-cadastro-profissional',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './cadastro-profissional.html',
   styleUrls: ['./cadastro-profissional.css']
 })
@@ -26,6 +26,23 @@ export class CadastroProfissionalComponent {
   errorMessage: string = '';
   isLoading: boolean = false;
 
+  // Getters para validação e atributos ARIA no template HTML
+  get nomeControl(): AbstractControl | null {
+    return this.cadastroForm.get('nome');
+  }
+
+  get crefControl(): AbstractControl | null {
+    return this.cadastroForm.get('cref');
+  }
+
+  get emailControl(): AbstractControl | null {
+    return this.cadastroForm.get('email');
+  }
+
+  get senhaControl(): AbstractControl | null {
+    return this.cadastroForm.get('senha');
+  }
+
   onSubmit(): void {
     if (this.cadastroForm.invalid) {
       this.cadastroForm.markAllAsTouched();
@@ -36,9 +53,8 @@ export class CadastroProfissionalComponent {
     this.errorMessage = '';
 
     this.authService.cadastrarProfissional(this.cadastroForm.value).subscribe({
-      next: (response) => {
+      next: () => {
         this.isLoading = false;
-        // O token já foi gravado no localStorage pelo service via tap()
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
@@ -46,7 +62,7 @@ export class CadastroProfissionalComponent {
         if (err.status === 400 && err.error?.error) {
           this.errorMessage = err.error.error;
         } else {
-          this.errorMessage = 'Erro ao cadastrar. Tente novamente.';
+          this.errorMessage = 'Erro ao realizar cadastro. Tente novamente.';
         }
       }
     });

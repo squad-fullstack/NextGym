@@ -45,7 +45,6 @@ export class LoginProfissionalComponent {
     this.authService.login(credentials).subscribe({
       next: () => {
         this.isLoading = false;
-        // Rota real cadastrada no seu app.routes.ts
         this.router.navigate(['/matricula-aluno']);
       },
       error: (err) => {

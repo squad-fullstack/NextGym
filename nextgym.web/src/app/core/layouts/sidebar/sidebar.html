@@ -1,0 +1,51 @@
+<div class="flex h-screen bg-slate-50">
+  <aside class="w-64 bg-[#111625] text-slate-300 flex flex-col justify-between p-4 shadow-xl">
+    <div>
+      <div class="flex items-center gap-3 px-2 py-4 mb-6">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-slate-950 font-black text-xl">
+          <svg class="w-6 h-6 text-slate-900" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-white font-bold text-lg tracking-wide">NextGym</h1>
+          <span class="text-[10px] uppercase tracking-wider text-emerald-400 font-semibold">Admin Panel</span>
+        </div>
+      </div>
+
+      <nav class="space-y-1">
+        <a routerLink="/home" routerLinkActive="bg-[#1b2234] text-white border-r-4 border-emerald-500" 
+          class="flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium text-white transition">
+          <div class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            Home
+          </div>
+          <span class="w-1.5 h-4 bg-emerald-500 rounded-full"></span>
+        </a>
+
+        <a routerLink="/alunos/listagem-alunos" routerLinkActive="bg-[#1b2234] text-white border-r-4 border-emerald-500" 
+           class="flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium text-white transition">
+          <div class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            Alunos
+          </div>
+          <span class="w-1.5 h-4 bg-emerald-500 rounded-full"></span>
+        </a>     
+      </nav>
+    </div>
+
+    <div class="border-t border-slate-800 pt-4 flex items-center gap-3 px-2">
+      <div class="w-9 h-9 rounded-full bg-emerald-600 border border-emerald-500 flex items-center justify-center font-bold text-white text-sm">
+        {{ usuarioInicial }}
+      </div>
+      <div class="flex flex-col">
+        <span class="text-sm font-medium text-white capitalize">{{ usuarioNome }}</span>
+        <span class="text-xs text-slate-400 truncate max-w-[130px]">{{ usuarioEmail }}</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="flex-1 overflow-y-auto p-8">
+    <router-outlet></router-outlet>
+  </main>
+</div>

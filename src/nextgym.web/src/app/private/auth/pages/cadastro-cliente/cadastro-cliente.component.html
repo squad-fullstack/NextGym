@@ -2,29 +2,47 @@
   <h2>Matricular Novo Cliente - NextGym</h2>
 
   <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
-    
-    <div class="form-group">
-      <label for="nome">Nome Completo</label>
-      <input id="nome" type="text" formControlName="nome" placeholder="Ex: João Silva" />
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="nome">Nome Completo</label>
+        <input id="nome" type="text" formControlName="nome" placeholder="Ex: João Silva" />
+      </div>
+      <div class="form-group">
+        <label for="cpf">CPF</label>
+        <input id="cpf" type="text" formControlName="cpf" placeholder="000.000.000-00" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input id="email" type="email" formControlName="email" placeholder="aluno@email.com" />
+      </div>
+      <div class="form-group">
+        <label for="telefone">Telefone</label>
+        <input id="telefone" type="text" formControlName="telefone" placeholder="(00) 00000-0000" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="dataNascimento">Data de Nascimento</label>
+        <input id="dataNascimento" type="date" formControlName="dataNascimento" />
+      </div>
+      <div class="form-group">
+        <label for="plano">Plano da Academia</label>
+        <select id="plano" formControlName="plano">
+          <option value="Mensal">Mensal</option>
+          <option value="Trimestral">Trimestral</option>
+          <option value="Anual VIP">Anual VIP</option>
+        </select>
+      </div>
     </div>
 
     <div class="form-group">
-      <label for="email">E-mail</label>
-      <input id="email" type="email" formControlName="email" placeholder="aluno@email.com" />
-    </div>
-
-    <div class="form-group">
-      <label for="cpf">CPF</label>
-      <input id="cpf" type="text" formControlName="cpf" placeholder="000.000.000-00" />
-    </div>
-
-    <div class="form-group">
-      <label for="plano">Plano da Academia</label>
-      <select id="plano" formControlName="plano">
-        <option value="Mensal">Mensal</option>
-        <option value="Trimestral">Trimestral</option>
-        <option value="Anual VIP">Anual VIP</option>
-      </select>
+      <label for="observacoes">Observações</label>
+      <textarea id="observacoes" formControlName="observacoes" placeholder="Digite aqui observações médicas, restrições físicas ou notas adicionais sobre o aluno..."></textarea>
     </div>
 
     <button type="submit" [disabled]="cadastroForm.invalid">Cadastrar Cliente</button>

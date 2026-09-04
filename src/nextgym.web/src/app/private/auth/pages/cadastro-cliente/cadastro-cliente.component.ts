@@ -16,7 +16,10 @@ export class CadastroClienteComponent {
     nome: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
     cpf: ['', [Validators.required]],
-    plano: ['Mensal', [Validators.required]]
+    telefone: ['', [Validators.required]],
+    dataNascimento: ['', [Validators.required]],
+    plano: ['Mensal', [Validators.required]],
+    observacoes: ['']
   });
 
   onSubmit() {
@@ -28,4 +31,4 @@ export class CadastroClienteComponent {
       alert('Por favor, preencha todos os campos corretamente.');
     }
   }
-}   
+}

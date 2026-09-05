@@ -6,13 +6,13 @@
   padding: 40px 48px;
   background: #ffffff;
   border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(76, 29, 149, 0.15);
+  box-shadow: 0 20px 50px rgba(16, 185, 129, 0.15);
   font-family: 'Poppins', system-ui, sans-serif;
 }
 
 .cadastro-container h2 {
   text-align: center;
-  color: #4c1d95;
+  color: #065f46;
   font-size: 1.4rem;
   font-weight: 700;
   margin: 0 0 8px;
@@ -24,7 +24,7 @@
   display: block;
   width: 48px;
   height: 4px;
-  background: linear-gradient(135deg, #7c3aed, #db2777);
+  background: linear-gradient(135deg, #10b981, #059669);
   border-radius: 4px;
   margin: 14px auto 30px;
 }
@@ -43,7 +43,7 @@
   display: block;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #4c1d95;
+  color: #065f46;
   margin-bottom: 6px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
@@ -72,8 +72,8 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
   background: #ffffff;
 }
 
@@ -86,7 +86,7 @@ button[type="submit"] {
   width: 100%;
   padding: 15px;
   margin-top: 10px;
-  background: linear-gradient(135deg, #7c3aed, #db2777);
+  background: linear-gradient(135deg, #10b981, #059669);
   color: #fff;
   font-weight: 700;
   font-size: 1rem;
@@ -100,7 +100,7 @@ button[type="submit"] {
 button[type="submit"]:hover:not(:disabled) {
   opacity: 0.93;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.35);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
 }
 
 button[type="submit"]:disabled {

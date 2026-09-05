@@ -24,7 +24,7 @@ export class CadastroClienteComponent {
 
   onSubmit() {
     if (this.cadastroForm.valid) {
-      console.log('Cliente Cadastrado:', this.cadastroForm.value);
+      console.log('Cliente cadastrado:', this.cadastroForm.value);
       alert('Cliente cadastrado com sucesso!');
       this.cadastroForm.reset({ plano: 'Mensal' });
     } else {

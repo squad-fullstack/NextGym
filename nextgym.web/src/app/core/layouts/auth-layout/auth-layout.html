@@ -1,8 +1,15 @@
 <div class="auth-layout-container">
-  <header class="auth-header">
-    <img src="assets/images/nextgym-logo.png" alt="Logotipo da NextGym, sistema de academia" class="logo">
+  <header class="auth-brand">
+    <div class="brand-icon">
+      <svg fill="currentColor" viewBox="0 0 24 24" class="dumbbell-svg">
+        <path d="M6 5a1 1 0 0 0-1 1v2H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h1v2a1 1 0 0 0 2 0v-2h1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H6V6a1 1 0 0 0-1-1zm12 0a1 1 0 0 0-1 1v2h-1a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1v2a1 1 0 0 0 2 0v-2h1a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-1V6a1 1 0 0 0-1-1zM8 11h8v2H8v-2z"/>
+      </svg>
+    </div>
+    <h1 class="brand-title">NextGym</h1>
+    <span class="brand-subtitle">Gestão de Academia</span>
   </header>
+
   <main class="auth-card">
-    <router-outlet></router-outlet> 
+    <router-outlet></router-outlet>
   </main>
 </div>

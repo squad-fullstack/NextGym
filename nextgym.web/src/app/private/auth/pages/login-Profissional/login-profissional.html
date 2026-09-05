@@ -1,67 +1,37 @@
-<section class="login-section">
-  <h1 class="sr-only">Faça login na sua conta NextGym</h1>
+<h2 class="auth-form-title">Login</h2>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-    <div 
-      *ngIf="errorMessage" 
-      role="alert" 
-      aria-live="assertive" 
-      class="error-message global-error"
-    >
-      {{ errorMessage }}
+<div *ngIf="errorMessage" class="alert-error">
+  {{ errorMessage }}
+</div>
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-container">
+  <div class="form-field">
+    <label class="label">E-mail</label>
+    <input type="email" formControlName="email" placeholder="seu@email.com" class="input-text">
+  </div>
+
+  <div class="form-field">
+    <label class="label">Senha</label>
+    <div class="password-wrapper">
+      <input [type]="mostrarSenha ? 'text' : 'password'" formControlName="senha" placeholder="••••••••" class="input-text password-input">
+      <button type="button" (click)="alternarVisibilidadeSenha()" class="btn-toggle-eye" [title]="mostrarSenha ? 'Ocultar senha' : 'Ver senha'">
+        <svg *ngIf="!mostrarSenha" class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+        </svg>
+        <svg *ngIf="mostrarSenha" class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/>
+        </svg>
+      </button>
     </div>
+  </div>
 
-    <div class="input-group">
-      <label for="email">E-mail</label>
-      <input 
-        type="email" 
-        id="email" 
-        formControlName="email" 
-        placeholder="seu@email.com"
-        [attr.aria-invalid]="emailControl?.invalid && emailControl?.touched ? true : null"
-        aria-describedby="email-error"
-      >
-      <span *ngIf="emailControl?.invalid && emailControl?.touched" id="email-error" class="error-message" role="alert">
-        <span *ngIf="emailControl?.errors?.['required']">O e-mail é obrigatório.</span>
-        <span *ngIf="emailControl?.errors?.['email']">Digite um e-mail válido.</span>
-      </span>
-    </div>
+  <button type="submit" [disabled]="isLoading" class="btn-submit">
+    {{ isLoading ? 'Entrando...' : 'Entrar' }}
+  </button>
 
-    <div class="input-group">
-      <label for="password">Senha</label>
-      <input 
-        type="password" 
-        id="password" 
-        formControlName="password" 
-        placeholder="********"
-        [attr.aria-invalid]="passwordControl?.invalid && passwordControl?.touched ? true : null"
-        aria-describedby="password-error"
-      >
-
-      <span *ngIf="passwordControl?.invalid && passwordControl?.touched" id="password-error" class="error-message" role="alert">
-        <span *ngIf="passwordControl?.errors?.['required']">A senha é obrigatória.</span>
-        <span *ngIf="passwordControl?.errors?.['minlength']">A senha deve ter pelo menos 6 caracteres.</span>
-      </span>
-    </div>
-
-    <button 
-      type="submit" 
-      class="btn-primary" 
-      [disabled]="isLoading"
-      [attr.aria-busy]="isLoading"
-    >
-      {{ isLoading ? 'Entrando...' : 'Entrar' }}
-    </button>
-
-    <div class="forgot-password-container">
-      <a routerLink="/auth/recuperar-senha" class="forgot-password-link">Esqueceu sua senha?</a>
-    </div>
-    
-    <div class="register-container">
-      <p>Ainda não tem conta? 
-        <a [routerLink]="['/auth/cadastro/profissional']" class="register-link">Cadastre-se aqui</a>
-      </p>
-    </div>
-
-  </form>
-</section>
+  <div class="footer-link">
+    <span>Ainda não tem conta?</span>
+    <a routerLink="/auth/cadastro/profissional" class="link-bold">Cadastre-se aqui</a>
+  </div>
+</form>

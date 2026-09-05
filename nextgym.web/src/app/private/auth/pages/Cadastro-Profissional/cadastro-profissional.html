@@ -1,101 +1,61 @@
-<section class="cadastro-section">
-  <h1 class="sr-only">Faça seu cadastro na NextGym</h1>
+<h2 class="auth-form-title">Cadastro</h2>
 
-  <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()" class="cadastro-form">
-    
-    <!-- Alerta de erro vindo da API (E-mail/CREF já existente, etc.) -->
-    <div 
-      *ngIf="errorMessage" 
-      role="alert" 
-      aria-live="assertive" 
-      class="error-message" 
-      style="margin-bottom: 1rem; font-weight: bold;"
-    >
-      {{ errorMessage }}
+<div *ngIf="errorMessage" class="alert-error">
+  {{ errorMessage }}
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+  <div class="form-field">
+    <label class="label">Nome</label>
+    <input type="text" formControlName="nome" placeholder="Seu nome completo" class="input-text">
+  </div>
+
+  <div class="form-field">
+    <label class="label">E-mail</label>
+    <input type="email" formControlName="email" placeholder="seu@email.com" class="input-text">
+  </div>
+
+  <div class="form-field">
+    <label class="label">Senha</label>
+    <div class="password-wrapper">
+      <input [type]="mostrarSenha ? 'text' : 'password'" formControlName="senha" placeholder="••••••••" class="input-text password-input">
+      <button type="button" (click)="alternarVisibilidadeSenha()" class="btn-toggle-eye" [title]="mostrarSenha ? 'Ocultar senha' : 'Ver senha'">
+        <svg *ngIf="!mostrarSenha" class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+        </svg>
+        <svg *ngIf="mostrarSenha" class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/>
+        </svg>
+      </button>
     </div>
+  </div>
 
-    <!-- Campo Nome -->
-    <div class="input-group">
-      <label for="nome">Nome</label>
-      <input 
-        type="text" 
-        id="nome" 
-        formControlName="nome" 
-        placeholder="Digite seu nome completo"
-        [attr.aria-invalid]="nomeControl?.invalid && nomeControl?.touched ? true : null"
-        aria-describedby="nome-error"
-      >
-      <span *ngIf="nomeControl?.invalid && nomeControl?.touched" id="nome-error" class="error-message" role="alert">
-        <span *ngIf="nomeControl?.errors?.['required']">O nome é obrigatório.</span>
-        <span *ngIf="nomeControl?.errors?.['minlength']">O nome deve ter no mínimo 3 caracteres.</span>
-      </span>
+  <div class="form-field">
+    <label class="label">Registro Acadêmico</label>
+    <input type="text" formControlName="registroAcademico" placeholder="RA ou CREF" class="input-text">
+  </div>
+
+  <div class="form-field">
+    <label class="label">Perfil</label>
+    <div class="select-wrapper">
+      <select formControlName="perfil" class="input-select">
+        <option value="PROFESSOR">Professor</option>
+        <option value="RECEPCAO">Recepção</option>
+        <option value="ADMINISTRADOR">Administrador</option>
+      </select>
+      <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+      </svg>
     </div>
+  </div>
 
-    <!-- Campo CREF (Substituindo RA para bater com a entidade do backend) -->
-    <div class="input-group">
-      <label for="cref">CREF</label>
-      <input 
-        type="text" 
-        id="cref" 
-        formControlName="cref" 
-        placeholder="Digite seu CREF (ex: 123456-G/SP)"
-        [attr.aria-invalid]="crefControl?.invalid && crefControl?.touched ? true : null"
-        aria-describedby="cref-error"
-      >
-      <span *ngIf="crefControl?.invalid && crefControl?.touched" id="cref-error" class="error-message" role="alert">
-        <span *ngIf="crefControl?.errors?.['required']">O CREF é obrigatório.</span>
-      </span>
-    </div>
+  <button type="submit" [disabled]="isSubmitting" class="btn-submit">
+    {{ isSubmitting ? 'Cadastrando...' : 'Cadastrar' }}
+  </button>
 
-    <!-- Campo E-mail -->
-    <div class="input-group">
-      <label for="email">E-mail</label>
-      <input 
-        type="email" 
-        id="email" 
-        formControlName="email" 
-        placeholder="seu@email.com"
-        [attr.aria-invalid]="emailControl?.invalid && emailControl?.touched ? true : null"
-        aria-describedby="email-error"
-      >
-      <span *ngIf="emailControl?.invalid && emailControl?.touched" id="email-error" class="error-message" role="alert">
-        <span *ngIf="emailControl?.errors?.['required']">O e-mail é obrigatório.</span>
-        <span *ngIf="emailControl?.errors?.['email']">Digite um e-mail válido.</span>
-      </span>
-    </div>
-
-    <!-- Campo Senha -->
-    <div class="input-group">
-      <label for="senha">Senha</label>
-      <input 
-        type="password" 
-        id="senha" 
-        formControlName="senha" 
-        placeholder="********"
-        [attr.aria-invalid]="senhaControl?.invalid && senhaControl?.touched ? true : null"
-        aria-describedby="senha-error"
-      >
-      <span *ngIf="senhaControl?.invalid && senhaControl?.touched" id="senha-error" class="error-message" role="alert">
-        <span *ngIf="senhaControl?.errors?.['required']">A senha é obrigatória.</span>
-        <span *ngIf="senhaControl?.errors?.['minlength']">A senha deve ter pelo menos 6 caracteres.</span>
-      </span>
-    </div>
-
-    <!-- Botão com estado de carregamento -->
-    <button 
-      type="submit" 
-      class="btn-primary" 
-      [disabled]="isLoading"
-      [attr.aria-busy]="isLoading"
-    >
-      {{ isLoading ? 'Cadastrando...' : 'Cadastrar' }}
-    </button>
-
-    <div class="register-container">
-      <p>Já possui uma conta? 
-        <a [routerLink]="['/auth/login']" class="register-link">Faça login aqui</a>
-      </p>
-    </div>
-
-  </form>
-</section>
+  <div class="footer-link">
+    <span>Já tem uma conta?</span>
+    <a routerLink="/auth/login" class="link-bold">Faça login aqui</a>
+  </div>
+</form>

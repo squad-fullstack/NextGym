@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
@@ -16,47 +16,45 @@ export class CadastroProfissionalComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  cadastroForm: FormGroup = this.fb.group({
-    nome: ['', [Validators.required, Validators.minLength(3)]],
-    cref: ['', [Validators.required]],
+  isSubmitting = false;
+  mostrarSenha = false;
+  errorMessage = '';
+
+  form: FormGroup = this.fb.group({
+    nome: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
-    senha: ['', [Validators.required, Validators.minLength(6)]]
+    senha: ['', [Validators.required, Validators.minLength(6)]],
+    registroAcademico: ['', [Validators.required]],
+    perfil: ['PROFESSOR', [Validators.required]]
   });
 
-  errorMessage: string = '';
-  isLoading: boolean = false;
-
-  get nomeControl(): AbstractControl | null {
-    return this.cadastroForm.get('nome');
-  }
-
-  get crefControl(): AbstractControl | null {
-    return this.cadastroForm.get('cref');
-  }
-
-  get emailControl(): AbstractControl | null {
-    return this.cadastroForm.get('email');
-  }
-
-  get senhaControl(): AbstractControl | null {
-    return this.cadastroForm.get('senha');
+  alternarVisibilidadeSenha(): void {
+    this.mostrarSenha = !this.mostrarSenha;
   }
 
   onSubmit(): void {
-    if (this.cadastroForm.invalid) {
-      this.cadastroForm.markAllAsTouched();
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
 
-    this.isLoading = true;
+    this.isSubmitting = true;
     this.errorMessage = '';
 
-    this.authService.cadastrarProfissional(this.cadastroForm.value).subscribe({
-      next: (res: any) => {
+    this.authService.cadastrarProfissional(this.form.value).subscribe({
+      next: () => {
+        this.isSubmitting = false;
         this.router.navigate(['/auth/login']);
       },
       error: (err: any) => {
         console.error('Erro no cadastro:', err);
+        this.isSubmitting = false;
+
+        if (err.status === 409) {
+          this.errorMessage = 'E-mail ou Registro Acadêmico já cadastrado.';
+        } else {
+          this.errorMessage = err?.error?.message || 'Erro ao cadastrar profissional. Verifique os dados.';
+        }
       }
     });
   }

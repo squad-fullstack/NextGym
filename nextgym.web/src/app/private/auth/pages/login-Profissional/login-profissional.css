@@ -1,121 +1,149 @@
-.login-form {
+:host {
+  display: block;
+  width: 100%;
+}
+
+.auth-form-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  margin: 0 0 1.5rem 0;
+}
+
+.alert-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecdd3;
+  color: #e11d48;
+  font-size: 0.8125rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.form-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; 
+  gap: 1.125rem;
 }
 
-.input-group {
+.form-field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.375rem;
 }
 
-label {
-  font-weight: 600;
-  color: #333333;
-  font-size: 1rem;
+.label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #334155;
 }
 
-input {
-  padding: 0.75rem 1rem;
-  border: 1px solid #cccccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  color: #1a1a1a; 
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input::placeholder {
-  color: #595959; 
-  opacity: 1;
-}
-input:focus-visible {
+.input-text {
+  width: 100%;
+  height: 2.625rem;
+  padding: 0 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  color: #0f172a;
+  background-color: #ffffff;
   outline: none;
-  border-color: #0f172a;
-  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.2);
+  box-sizing: border-box;
 }
 
-.btn-primary {
-  background-color: #0f172a; 
-  color: #ffffff;
-  padding: 0.875rem;
+.input-text::placeholder {
+  color: #94a3b8;
+}
+
+.input-text:focus {
+  border-color: #10b981;
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  padding-right: 2.5rem;
+}
+
+.btn-toggle-eye {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
   border: none;
-  border-radius: 6px;
-  font-size: 1rem;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-toggle-eye:hover {
+  color: #334155;
+}
+
+.eye-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.btn-submit {
+  width: 100%;
+  height: 2.625rem;
+  margin-top: 0.5rem;
+  background-color: #111625;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
+  transition: opacity 0.2s;
 }
 
-.btn-primary:hover {
-  background-color: #1e293b; 
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.btn-primary:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.4);
-}
-
-.btn-primary:active {
-  transform: scale(0.98); 
-}
-
-.forgot-password-container {
+.center-link {
   text-align: center;
-  margin-top: 0.5rem;
-}
-
-.forgot-password-link {
-  color: #4b5563;
-  text-decoration: none;
-  font-size: 0.875rem;
-}
-
-.forgot-password-link:hover {
-  text-decoration: underline;
-  color: #0f172a;
-}
-
-.forgot-password-link:focus-visible {
-  outline: 2px solid #0f172a;
-  outline-offset: 4px;
-  border-radius: 2px;
-}
-
-.error-message {
-  color: #dc2626;
-  font-size: 0.875rem;
-  font-weight: 500;
   margin-top: 0.25rem;
 }
 
-input[aria-invalid="true"] {
-  border-color: #dc2626;
+.link-muted {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-decoration: none;
 }
 
-input[aria-invalid="true"]:focus-visible {
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+.link-muted:hover {
+  text-decoration: underline;
 }
 
-.register-container {
-  text-align: center;
+.footer-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: #64748b;
   margin-top: 1rem;
-  font-size: 0.875rem;
-  color: #4b5563;
 }
 
-.register-link {
+.link-bold {
   color: #0f172a;
   font-weight: 600;
   text-decoration: none;
 }
 
-.register-link:hover {
+.link-bold:hover {
   text-decoration: underline;
-}
-
-.register-link:focus-visible {
-  outline: 2px solid #0f172a;
-  outline-offset: 4px;
-  border-radius: 2px;
 }

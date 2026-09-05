@@ -2,20 +2,27 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
-export interface CadastroProfissionalPayload {
-  nome: string;
-  cref: string;
-  email: string;
-  senha: string;
+export interface AuthResponse {
+  token: string;
+  tipo?: string;
+  id?: number;
+  nome?: string;
+  email?: string;
+  perfil?: string;
+  registroAcademico?: string;
 }
 
 export interface LoginPayload {
   email: string;
-  senha: string;
+  senha?: string;
 }
 
-export interface AuthResponse {
-  token: string;
+export interface CadastroProfissionalPayload {
+  nome: string;
+  email: string;
+  senha?: string;
+  registroAcademico?: string;
+  perfil?: string;
 }
 
 @Injectable({
@@ -23,23 +30,26 @@ export interface AuthResponse {
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/auth';
+  private readonly apiUrl = 'https://academia-api-0wxl.onrender.com';
 
-  cadastrarProfissional(payload: CadastroProfissionalPayload): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/cadastro/profissional`, payload).pipe(
-      tap(response => {
-        if (response?.token) {
-          localStorage.setItem('token', response.token);
+  login(payload: LoginPayload): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/api/funcionarios/login`, payload).pipe(
+      tap((res) => {
+        if (res?.token) {
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('usuario_nome', res.nome || '');
+          localStorage.setItem('usuario_email', res.email || '');
+          localStorage.setItem('usuario_perfil', res.perfil || '');
         }
       })
     );
   }
 
-  login(payload: LoginPayload): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, payload).pipe(
-      tap(response => {
-        if (response?.token) {
-          localStorage.setItem('token', response.token);
+  cadastrarProfissional(payload: CadastroProfissionalPayload): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/api/funcionarios`, payload).pipe(
+      tap((res) => {
+        if (res?.token) {
+          localStorage.setItem('token', res.token);
         }
       })
     );
@@ -47,13 +57,17 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
+    localStorage.removeItem('usuario_nome');
+    localStorage.removeItem('usuario_email');
+    localStorage.removeItem('usuario_perfil');
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return !!localStorage.getItem('token');
+  }
+
+  // Alias caso algum outro ponto ainda use em português
+  estaAutenticado(): boolean {
+    return this.isAuthenticated();
   }
 }

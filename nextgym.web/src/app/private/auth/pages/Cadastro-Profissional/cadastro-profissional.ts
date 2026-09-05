@@ -53,17 +53,11 @@ export class CadastroProfissionalComponent {
     this.errorMessage = '';
 
     this.authService.cadastrarProfissional(this.cadastroForm.value).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this.router.navigate(['/dashboard']);
+      next: (res) => {
+        // seu redirecionamento
       },
-      error: (err) => {
-        this.isLoading = false;
-        if (err.status === 400 && err.error?.error) {
-          this.errorMessage = err.error.error;
-        } else {
-          this.errorMessage = 'Erro ao realizar cadastro. Tente novamente.';
-        }
+      error: (err: any) => { // <-- tipar explicitamente como 'any' ou 'HttpErrorResponse'
+        console.error('Erro no cadastro:', err);
       }
     });
   }

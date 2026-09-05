@@ -26,7 +26,6 @@ export class CadastroProfissionalComponent {
   errorMessage: string = '';
   isLoading: boolean = false;
 
-  // Getters para validação e atributos ARIA no template HTML
   get nomeControl(): AbstractControl | null {
     return this.cadastroForm.get('nome');
   }
@@ -53,10 +52,10 @@ export class CadastroProfissionalComponent {
     this.errorMessage = '';
 
     this.authService.cadastrarProfissional(this.cadastroForm.value).subscribe({
-      next: (res) => {
-        // seu redirecionamento
+      next: (res: any) => {
+        this.router.navigate(['/auth/login']);
       },
-      error: (err: any) => { // <-- tipar explicitamente como 'any' ou 'HttpErrorResponse'
+      error: (err: any) => {
         console.error('Erro no cadastro:', err);
       }
     });

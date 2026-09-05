@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../../environments/enviroments';
 
 export interface AuthResponse {
   token: string;
@@ -9,7 +10,6 @@ export interface AuthResponse {
   nome?: string;
   email?: string;
   perfil?: string;
-  registroAcademico?: string;
 }
 
 export interface LoginPayload {
@@ -30,7 +30,7 @@ export interface CadastroProfissionalPayload {
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private readonly apiUrl = 'https://academia-api-0wxl.onrender.com';
+  private readonly apiUrl = environment.apiUrl || 'https://academia-api-0wxl.onrender.com';
 
   login(payload: LoginPayload): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/api/funcionarios/login`, payload).pipe(
@@ -66,7 +66,6 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
-  // Alias caso algum outro ponto ainda use em português
   estaAutenticado(): boolean {
     return this.isAuthenticated();
   }

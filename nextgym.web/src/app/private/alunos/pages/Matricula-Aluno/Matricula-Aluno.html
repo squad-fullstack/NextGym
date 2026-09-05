@@ -1,32 +1,127 @@
-<div class="cadastro-container">
-  <h2>Matricular Novo Cliente - NextGym</h2>
-
-  <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
-    
-    <div class="form-group">
-      <label for="nome">Nome Completo</label>
-      <input id="nome" type="text" formControlName="nome" placeholder="Ex: João Silva" />
+<div class="matricula-container">
+  <div class="matricula-header">
+    <div>
+      <div class="breadcrumb">
+        Painel &gt; Alunos &gt; <span class="breadcrumb-active">Novo Cadastro</span>
+      </div>
+      <h1 class="matricula-title">Cadastro de Aluno</h1>
+      <p class="matricula-subtitle">Registre um novo estudante no sistema do NextGym preenchendo as informações abaixo.</p>
     </div>
 
-    <div class="form-group">
-      <label for="email">E-mail</label>
-      <input id="email" type="email" formControlName="email" placeholder="aluno@email.com" />
+    <div class="status-badge">
+      <span class="status-pulse"></span>
+      Sistema Online
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="cpf">CPF</label>
-      <input id="cpf" type="text" formControlName="cpf" placeholder="000.000.000-00" />
-    </div>
+  <div class="matricula-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-    <div class="form-group">
-      <label for="plano">Plano da Academia</label>
-      <select id="plano" formControlName="plano">
-        <option value="Mensal">Mensal</option>
-        <option value="Trimestral">Trimestral</option>
-        <option value="Anual VIP">Anual VIP</option>
-      </select>
-    </div>
+      <div class="section-header">
+        <span class="section-title">Informações do Aluno</span>
+        <div class="section-line"></div>
+      </div>
 
-    <button type="submit" [disabled]="cadastroForm.invalid">Cadastrar Cliente</button>
-  </form>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Nome Completo</label>
+          <input type="text" formControlName="nome" placeholder="Ex: João Silva" class="form-control">
+          <span *ngIf="form.get('nome')?.touched && form.get('nome')?.invalid" class="error-text">Nome obrigatório.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Gênero</label>
+          <div class="select-wrapper">
+            <select formControlName="genero" class="form-control select-control">
+              <option value="MASCULINO">Masculino</option>
+              <option value="FEMININO">Feminino</option>
+              <option value="OUTRO">Outro</option>
+            </select>
+            <svg class="select-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">E-mail</label>
+          <input type="email" formControlName="email" placeholder="aluno@email.com" class="form-control">
+          <span *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="error-text">E-mail válido obrigatório.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Telefone</label>
+          <input type="text" formControlName="telefone" placeholder="(11) 98765-4321" class="form-control">
+          <span *ngIf="form.get('telefone')?.touched && form.get('telefone')?.invalid" class="error-text">Telefone obrigatório.</span>
+        </div>
+      </div>
+
+      <!-- Seção: Dados Físicos e Treino -->
+      <div class="section-header">
+        <span class="section-title">Dados Físicos e Treino</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="form-grid-4">
+        <div class="form-group">
+          <label class="form-label">Idade (anos)</label>
+          <input type="number" formControlName="idade" placeholder="24" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Peso (kg)</label>
+          <input type="number" step="0.1" formControlName="peso" placeholder="78.5" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Altura (m)</label>
+          <input type="number" step="0.01" formControlName="altura" placeholder="1.75" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Dias / Semana</label>
+          <input type="number" min="1" max="7" formControlName="diasDisponiveisSemana" placeholder="4" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-grid-2" style="margin-top: 1rem;">
+        <div class="form-group">
+          <label class="form-label">Nível de Experiência</label>
+          <div class="select-wrapper">
+            <select formControlName="nivelExperiencia" class="form-control select-control">
+              <option value="NUNCA_TREINOU">Nunca Treinou</option>
+              <option value="INICIANTE">Iniciante</option>
+              <option value="INTERMEDIARIO">Intermediário</option>
+              <option value="AVANCADO">Avançado</option>
+            </select>
+            <svg class="select-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-title">Observações</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Notas Médicas ou Restrições (Opcional)</label>
+        <textarea formControlName="restricaoMedica" rows="3" 
+                  placeholder="Digite aqui observações médicas, restrições físicas ou notas adicionais sobre o aluno..." 
+                  class="form-control textarea-control"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" routerLink="/alunos" class="btn-cancel">
+          Cancelar
+        </button>
+        <button type="submit" [disabled]="isSubmitting" class="btn-submit">
+          {{ isSubmitting ? 'Cadastrando...' : 'Cadastrar Aluno' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
 </div>

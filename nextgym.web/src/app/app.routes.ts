@@ -34,7 +34,7 @@ export const routes: Routes = [
             loadComponent: () => import('./private/alunos/pages/listagem-alunos/listagem-alunos').then(m => m.ListagemAlunoComponent)
           },
           {
-            path: 'novo',
+            path: 'cadastro-aluno',
             loadComponent: () => import('./private/alunos/pages/Matricula-Aluno/Matricula-Aluno').then(m => m.MatriculaAlunoComponent)
           }
         ]

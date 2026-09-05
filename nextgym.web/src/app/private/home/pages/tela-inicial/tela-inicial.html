@@ -1,71 +1,70 @@
-<div class="max-w-7xl mx-auto space-y-8">
-  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-    <div>
-      <div class="text-xs text-slate-400 font-medium mb-1">
-        Painel &gt; <span class="text-slate-600 font-semibold">Visão Geral</span>
+<div class="home-container">
+  <header class="home-header">
+    <div class="header-info">
+      <div class="breadcrumb">
+        Painel &gt; <span class="breadcrumb-active">Visão Geral</span>
       </div>
-      <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Bem-vindo ao NextGym</h1>
-      <p class="text-sm text-slate-500">Resumo operacional e acesso rápido às principais rotinas.</p>
+      <h1 class="page-title">Bem-vindo ao NextGym</h1>
+      <p class="page-subtitle">Resumo operacional e acesso rápido às principais rotinas.</p>
     </div>
 
-    <div class="flex items-center gap-3">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-200">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+    <div class="header-actions">
+      <div class="status-badge">
+        <span class="status-pulse"></span>
         Sistema Online
-      </span>
-      <button routerLink="/alunos/novo" 
-              class="inline-flex items-center gap-2 bg-[#111625] text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-slate-800 transition shadow-sm">
-        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      </div>
+      <button routerLink="/alunos/cadastro-aluno" class="btn-primary">
+        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
         Nova Matrícula
       </button>
     </div>
-  </div>
+  </header>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-      <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Alunos Ativos</span>
-      <div class="text-2xl font-bold text-slate-900 mt-2">
+  <section class="metrics-grid">
+    <article class="metric-card">
+      <span class="metric-label">Alunos Ativos</span>
+      <div class="metric-value">
         <span *ngIf="!isLoading">{{ alunosAtivos }}</span>
-        <span *ngIf="isLoading" class="text-slate-400 text-lg">Carregando...</span>
+        <span *ngIf="isLoading" class="metric-loading">Carregando...</span>
       </div>
-      <span class="text-xs text-emerald-600 font-medium mt-1 inline-block">Matrículas ativas na base</span>
-    </div>
+      <span class="metric-caption text-emerald">Matrículas ativas na base</span>
+    </article>
 
-    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-      <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Matrículas no Mês</span>
-      <div class="text-2xl font-bold text-slate-900 mt-2">
+    <article class="metric-card">
+      <span class="metric-label">Matrículas no Mês</span>
+      <div class="metric-value">
         <span *ngIf="!isLoading">{{ matriculasNoMes }}</span>
-        <span *ngIf="isLoading" class="text-slate-400 text-lg">Carregando...</span>
+        <span *ngIf="isLoading" class="metric-loading">Carregando...</span>
       </div>
-      <span class="text-xs text-slate-500 font-medium mt-1 inline-block">Registros cadastrados no sistema</span>
-    </div>
-  </div>
+      <span class="metric-caption text-slate">Registros cadastrados no sistema</span>
+    </article>
+  </section>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
-      <div>
-        <h2 class="text-base font-semibold text-slate-900">Gerenciamento de Alunos</h2>
-        <p class="text-sm text-slate-500 mt-1">Consulte a listagem completa, filtre por nível de experiência ou gerencie a base cadastrada.</p>
+  <section class="quick-actions-grid">
+    <article class="action-card">
+      <div class="action-content">
+        <h2 class="action-title">Gerenciamento de Alunos</h2>
+        <p class="action-description">Consulte a listagem completa, filtre por nível de experiência ou gerencie a base cadastrada.</p>
       </div>
-      <div class="mt-6">
-        <a routerLink="/alunos/listagem-alunos" class="inline-flex items-center text-sm font-semibold text-emerald-600 hover:text-emerald-700">
+      <div class="action-footer">
+        <a routerLink="/alunos/listagem-alunos" class="action-link">
           Acessar listagem de alunos →
         </a>
       </div>
-    </div>
+    </article>
 
-    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
-      <div>
-        <h2 class="text-base font-semibold text-slate-900">Nova Matrícula</h2>
-        <p class="text-sm text-slate-500 mt-1">Cadastre um novo cliente com dados pessoais, nível de experiência e restrições médicas.</p>
+    <article class="action-card">
+      <div class="action-content">
+        <h2 class="action-title">Nova Matrícula</h2>
+        <p class="action-description">Cadastre um novo cliente com dados pessoais, nível de experiência e restrições médicas.</p>
       </div>
-      <div class="mt-6">
-        <a routerLink="/alunos/novo" class="inline-flex items-center text-sm font-semibold text-emerald-600 hover:text-emerald-700">
+      <div class="action-footer">
+        <a routerLink="/alunos/cadastro-aluno" class="action-link">
           Abrir formulário de matrícula →
         </a>
       </div>
-    </div>
-  </div>
+    </article>
+  </section>
 </div>

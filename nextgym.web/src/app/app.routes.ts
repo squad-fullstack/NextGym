@@ -41,7 +41,7 @@ export const routes: Routes = [
           },
           {
             path: 'cadastro-aluno',
-            loadComponent: () => import('./private/alunos/pages/Matricula-Aluno/Matricula-Aluno').then(m => m.MatriculaAlunoComponent)
+            loadComponent: () => import('./private/alunos/pages/matricula-aluno/matricula-aluno').then(m => m.MatriculaAlunoComponent)
           },
           {
             path: '',

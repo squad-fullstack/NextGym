@@ -9,8 +9,8 @@ import { AlunoValidators } from '../../../../shared/validators/aluno.validators'
   selector: 'app-matricula-aluno',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
-  templateUrl: './Matricula-Aluno.html',
-  styleUrls: ['./Matricula-Aluno.css']
+  templateUrl: './matricula-aluno.html',
+  styleUrls: ['./matricula-aluno.css']
 })
 export class MatriculaAlunoComponent {
   private fb = inject(FormBuilder);
@@ -89,7 +89,7 @@ export class MatriculaAlunoComponent {
 
     return 'Valor inválido.';
   }
-  
+
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();

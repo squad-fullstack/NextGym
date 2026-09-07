@@ -4,22 +4,51 @@
   {{ errorMessage }}
 </div>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container" novalidate>
+  
+  <!-- Nome -->
   <div class="form-field">
     <label class="label">Nome</label>
-    <input type="text" formControlName="nome" placeholder="Seu nome completo" class="input-text">
+    <input 
+      type="text" 
+      formControlName="nome" 
+      placeholder="Seu nome completo" 
+      class="input-text"
+      [class.input-error]="campoInvalido('nome')">
+    <span *ngIf="campoInvalido('nome')" class="error-msg">
+      {{ obterMensagemErro('nome') }}
+    </span>
   </div>
 
+  <!-- E-mail -->
   <div class="form-field">
     <label class="label">E-mail</label>
-    <input type="email" formControlName="email" placeholder="seu@email.com" class="input-text">
+    <input 
+      type="email" 
+      formControlName="email" 
+      placeholder="seu@email.com" 
+      class="input-text"
+      [class.input-error]="campoInvalido('email')">
+    <span *ngIf="campoInvalido('email')" class="error-msg">
+      {{ obterMensagemErro('email') }}
+    </span>
   </div>
 
+  <!-- Senha -->
   <div class="form-field">
     <label class="label">Senha</label>
     <div class="password-wrapper">
-      <input [type]="mostrarSenha ? 'text' : 'password'" formControlName="senha" placeholder="••••••••" class="input-text password-input">
-      <button type="button" (click)="alternarVisibilidadeSenha()" class="btn-toggle-eye" [title]="mostrarSenha ? 'Ocultar senha' : 'Ver senha'">
+      <input 
+        [type]="mostrarSenha ? 'text' : 'password'" 
+        formControlName="senha" 
+        placeholder="••••••••" 
+        class="input-text password-input"
+        [class.input-error]="campoInvalido('senha')">
+      <button 
+        type="button" 
+        (click)="alternarVisibilidadeSenha()" 
+        class="btn-toggle-eye" 
+        [title]="mostrarSenha ? 'Ocultar senha' : 'Ver senha'">
         <svg *ngIf="!mostrarSenha" class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -29,13 +58,26 @@
         </svg>
       </button>
     </div>
+    <span *ngIf="campoInvalido('senha')" class="error-msg">
+      {{ obterMensagemErro('senha') }}
+    </span>
   </div>
 
+  <!-- Registro Acadêmico -->
   <div class="form-field">
     <label class="label">Registro Acadêmico</label>
-    <input type="text" formControlName="registroAcademico" placeholder="RA ou CREF" class="input-text">
+    <input 
+      type="text" 
+      formControlName="registroAcademico" 
+      placeholder="RA ou CREF" 
+      class="input-text"
+      [class.input-error]="campoInvalido('registroAcademico')">
+    <span *ngIf="campoInvalido('registroAcademico')" class="error-msg">
+      {{ obterMensagemErro('registroAcademico') }}
+    </span>
   </div>
 
+  <!-- Perfil -->
   <div class="form-field">
     <label class="label">Perfil</label>
     <div class="select-wrapper">
@@ -50,10 +92,12 @@
     </div>
   </div>
 
+  <!-- Botão Submit -->
   <button type="submit" [disabled]="isSubmitting" class="btn-submit">
     {{ isSubmitting ? 'Cadastrando...' : 'Cadastrar' }}
   </button>
 
+  <!-- Rodapé Login -->
   <div class="footer-link">
     <span>Já tem uma conta?</span>
     <a routerLink="/auth/login" class="link-bold">Faça login aqui</a>

@@ -36,9 +36,7 @@
             class="form-control"
             [class.is-invalid]="isFieldInvalid('nome')">
           <div *ngIf="isFieldInvalid('nome')" class="error-text">
-            <span *ngIf="form.get('nome')?.hasError('required')">Nome obrigatório.</span>
-            <span *ngIf="form.get('nome')?.hasError('minlength')">Mínimo de 10 caracteres.</span>
-            <span *ngIf="form.get('nome')?.hasError('pattern')">O nome não pode conter números ou caracteres especiais.</span>
+            <span>{{ getErrorMessage('nome') }}</span>
           </div>
         </div>
 
@@ -65,8 +63,7 @@
             class="form-control"
             [class.is-invalid]="isFieldInvalid('email')">
           <div *ngIf="isFieldInvalid('email')" class="error-text">
-            <span *ngIf="form.get('email')?.hasError('required')">E-mail obrigatório.</span>
-            <span *ngIf="form.get('email')?.hasError('email')">Formato inválido (ex: aluno@exemplo.com).</span>
+            <span>{{ getErrorMessage('email') }}</span>
           </div>
         </div>
 
@@ -79,8 +76,7 @@
             class="form-control"
             [class.is-invalid]="isFieldInvalid('telefone')">
           <div *ngIf="isFieldInvalid('telefone')" class="error-text">
-            <span *ngIf="form.get('telefone')?.hasError('required')">Telefone obrigatório.</span>
-            <span *ngIf="form.get('telefone')?.hasError('pattern')">Formato inválido (ex: 11977557755 ou (11)97755-7755).</span>
+            <span>{{ getErrorMessage('telefone') }}</span>
           </div>
         </div>
       </div>
@@ -100,9 +96,7 @@
             class="form-control"
             [class.is-invalid]="isFieldInvalid('idade')">
           <div *ngIf="isFieldInvalid('idade')" class="error-text">
-            <span *ngIf="form.get('idade')?.hasError('required')">Obrigatório.</span>
-            <span *ngIf="form.get('idade')?.hasError('max')">Máximo de 120 anos.</span>
-            <span *ngIf="form.get('idade')?.hasError('min')">Idade mínima de 1 ano.</span>
+            <span>{{ getErrorMessage('idade') }}</span>
           </div>
         </div>
 
@@ -115,8 +109,7 @@
             class="form-control"
             [class.is-invalid]="isFieldInvalid('peso')">
           <div *ngIf="isFieldInvalid('peso')" class="error-text">
-            <span *ngIf="form.get('peso')?.hasError('required')">Peso obrigatório.</span>
-            <span *ngIf="form.get('peso')?.hasError('pattern')">Formato inválido (ex: 78.5 ou 78).</span>
+            <span>{{ getErrorMessage('peso') }}</span>
           </div>
         </div>
 
@@ -129,8 +122,7 @@
             class="form-control"
             [class.is-invalid]="isFieldInvalid('altura')">
           <div *ngIf="isFieldInvalid('altura')" class="error-text">
-            <span *ngIf="form.get('altura')?.hasError('required')">Altura obrigatória.</span>
-            <span *ngIf="form.get('altura')?.hasError('pattern')">Formato inválido (ex: 1.80).</span>
+            <span>{{ getErrorMessage('altura') }}</span>
           </div>
         </div>
 
@@ -143,8 +135,7 @@
             class="form-control"
             [class.is-invalid]="isFieldInvalid('diasDisponiveisSemana')">
           <div *ngIf="isFieldInvalid('diasDisponiveisSemana')" class="error-text">
-            <span *ngIf="form.get('diasDisponiveisSemana')?.hasError('required')">Obrigatório.</span>
-            <span *ngIf="form.get('diasDisponiveisSemana')?.hasError('min') || form.get('diasDisponiveisSemana')?.hasError('max')">Mínimo 1 e máximo 7.</span>
+            <span>{{ getErrorMessage('diasDisponiveisSemana') }}</span>
           </div>
         </div>
       </div>

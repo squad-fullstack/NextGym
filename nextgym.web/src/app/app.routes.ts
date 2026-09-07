@@ -7,6 +7,12 @@ import { SidebarComponent } from './core/layouts/sidebar/sidebar';
 
 export const routes: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'home'
+  },
+
+  {
     path: 'auth',
     component: AuthLayout,
     children: [
@@ -20,12 +26,12 @@ export const routes: Routes = [
     path: '',
     component: SidebarComponent,
     canActivate: [authGuard],
+    canActivateChild: [authGuard],
     children: [
       {
         path: 'home',
         loadComponent: () => import('./private/home/pages/tela-inicial/tela-inicial').then(m => m.TelaInicialComponent)
       },
-
       {
         path: 'alunos',
         children: [
@@ -36,17 +42,19 @@ export const routes: Routes = [
           {
             path: 'cadastro-aluno',
             loadComponent: () => import('./private/alunos/pages/Matricula-Aluno/Matricula-Aluno').then(m => m.MatriculaAlunoComponent)
+          },
+          {
+            path: '',
+            redirectTo: 'listagem-alunos',
+            pathMatch: 'full'
           }
         ]
-      },
-
-      {
-        path: '',
-        redirectTo: 'home',
-        pathMatch: 'full'
       }
     ]
   },
 
-  { path: '**', redirectTo: 'home' }
+  { 
+    path: '**', 
+    redirectTo: 'home' 
+  }
 ];

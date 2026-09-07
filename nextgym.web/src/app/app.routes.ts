@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthLayout } from './core/layouts/auth-layout/auth-layout';
 import { LoginProfissionalComponent } from './private/auth/pages/login-Profissional/login-profissional';
-import { CadastroProfissionalComponent } from './private/auth/pages/Cadastro-Profissional/cadastro-profissional';
+import { CadastroProfissionalComponent } from './private/auth/pages/cadastro-profissional/cadastro-profissional';
 import { authGuard } from './core/guards/auth-guard';
 import { SidebarComponent } from './core/layouts/sidebar/sidebar';
 

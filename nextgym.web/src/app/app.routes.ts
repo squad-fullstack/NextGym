@@ -49,6 +49,10 @@ export const routes: Routes = [
             pathMatch: 'full'
           }
         ]
+      },
+      {
+        path: 'tipo-treino',
+        loadComponent: () => import('./private/auth/pages/cadastro-tipo-treino/cadastro-tipo-treino').then(m => m.CadastroTipoTreinoComponent)
       }
     ]
   },

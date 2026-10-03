@@ -1,0 +1,50 @@
+<div class="tipo-treino-container">
+  <header class="tipo-treino-header">
+    <div class="breadcrumb">
+      Painel &gt; <span class="breadcrumb-active">Cadastro de Tipo de Treino</span>
+    </div>
+    <h1 class="page-title">Cadastro de Tipo de Treino</h1>
+    <p class="page-subtitle">Cadastre as categorias de treino disponíveis para os planos.</p>
+  </header>
+
+  <section class="form-card">
+    <div *ngIf="successMessage" class="alert-success">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container" novalidate>
+      <div class="form-field">
+        <label class="label">Nome do Tipo de Treino</label>
+        <input
+          type="text"
+          formControlName="nome"
+          placeholder="Ex: Musculação"
+          class="input-text"
+          [class.input-error]="campoInvalido('nome')">
+        <span *ngIf="campoInvalido('nome')" class="error-msg">
+          {{ obterMensagemErro('nome') }}
+        </span>
+      </div>
+
+      <div class="form-field">
+        <label class="label">Descrição</label>
+        <textarea
+          formControlName="descricao"
+          placeholder="Descreva brevemente esse tipo de treino"
+          class="input-text textarea"
+          rows="4"
+          [class.input-error]="campoInvalido('descricao')"></textarea>
+        <span *ngIf="campoInvalido('descricao')" class="error-msg">
+          {{ obterMensagemErro('descricao') }}
+        </span>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Salvando...' : 'Salvar Tipo de Treino' }}
+      </button>
+    </form>
+  </section>
+</div>

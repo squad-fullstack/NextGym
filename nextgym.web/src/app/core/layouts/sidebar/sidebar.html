@@ -1,66 +1,193 @@
 <div class="layout-wrapper">
+
   <aside class="sidebar">
+
     <div class="sidebar-top">
+
+      <!-- LOGO -->
       <div class="brand-header">
+
         <div class="brand-icon-box">
-          <svg class="brand-icon" fill="currentColor" viewBox="0 0 24 24">
+          <svg
+            class="brand-icon"
+            fill="currentColor"
+            viewBox="0 0 24 24">
+
             <path d="M6 5a1 1 0 0 0-1 1v2H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h1v2a1 1 0 0 0 2 0v-2h1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H6V6a1 1 0 0 0-1-1zm12 0a1 1 0 0 0-1 1v2h-1a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1v2a1 1 0 0 0 2 0v-2h1a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-1V6a1 1 0 0 0-1-1zM8 11h8v2H8v-2z"/>
+
           </svg>
         </div>
+
         <div>
           <h1 class="brand-name">NextGym</h1>
           <span class="brand-badge">Admin Panel</span>
         </div>
+
       </div>
 
+
+      <!-- MENU -->
       <nav class="nav-list">
-        <a routerLink="/home" 
-           routerLinkActive="nav-item-active"
-           [routerLinkActiveOptions]="{ exact: true }"
-           class="nav-item">
+
+        <!-- HOME -->
+        <a
+          routerLink="/home"
+          routerLinkActive="nav-item-active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
+
           <div class="nav-item-label">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+
+            <svg
+              class="nav-icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
+
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+
             </svg>
+
             Home
+
           </div>
+
           <span class="active-indicator"></span>
+
         </a>
 
-        <a routerLink="/alunos/listagem-alunos" 
-           routerLinkActive="nav-item-active" 
-           class="nav-item">
+
+        <!-- ALUNOS -->
+        <a
+          routerLink="/alunos/listagem-alunos"
+          routerLinkActive="nav-item-active"
+          class="nav-item">
+
           <div class="nav-item-label">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+
+            <svg
+              class="nav-icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
+
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+
             </svg>
+
             Alunos
+
           </div>
+
           <span class="active-indicator"></span>
-        </a>     
+
+        </a>
+
+
+        <!-- TREINOS -->
+        <a
+          routerLink="/alunos/listagem-treinos"
+          routerLinkActive="nav-item-active"
+          class="nav-item">
+
+          <div class="nav-item-label">
+
+            <svg
+              class="nav-icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
+
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 5v14M18 5v14M3 9h6v6H3V9zm12 0h6v6h-6V9zM9 12h6"/>
+
+            </svg>
+
+            Treinos
+
+          </div>
+
+          <span class="active-indicator"></span>
+
+        </a>
+
       </nav>
+
     </div>
 
+
+    <!-- USUÁRIO -->
     <div class="sidebar-footer">
+
       <div class="user-profile">
+
         <div class="user-avatar">
           {{ usuarioInicial }}
         </div>
+
         <div class="user-details">
-          <span class="user-name">{{ usuarioNome }}</span>
-          <span class="user-email" [title]="usuarioEmail">{{ usuarioEmail }}</span>
+
+          <span class="user-name">
+            {{ usuarioNome }}
+          </span>
+
+          <span
+            class="user-email"
+            [title]="usuarioEmail">
+
+            {{ usuarioEmail }}
+
+          </span>
+
         </div>
+
       </div>
 
-      <button type="button" (click)="logout()" title="Encerrar sessão" class="btn-logout">
-        <svg class="logout-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+
+      <!-- LOGOUT -->
+      <button
+        type="button"
+        (click)="logout()"
+        title="Encerrar sessão"
+        class="btn-logout">
+
+        <svg
+          class="logout-icon"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24">
+
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+
         </svg>
+
       </button>
+
     </div>
+
   </aside>
 
+
+  <!-- CONTEÚDO DAS PÁGINAS -->
   <main class="main-content">
+
     <router-outlet></router-outlet>
+
   </main>
+
 </div>

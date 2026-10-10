@@ -49,12 +49,20 @@ export const routes: Routes = [
             pathMatch: 'full'
           }
         ]
+      },
+      {
+        path: 'tipo-treino',
+        loadComponent: () => import('./private/auth/pages/cadastro-tipo-treino/cadastro-tipo-treino').then(m => m.CadastroTipoTreinoComponent)
+      },
+      {
+        path: 'plano-treino',
+        loadComponent: () => import('./private/auth/pages/cadastro-plano-treino/cadastro-plano-treino').then(m => m.CadastroPlanoTreinoComponent)
       }
     ]
   },
 
-  { 
-    path: '**', 
-    redirectTo: 'home' 
+  {
+    path: '**',
+    redirectTo: 'home'
   }
 ];

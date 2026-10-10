@@ -1,0 +1,86 @@
+<div class="tipo-treino-container">
+  <header class="tipo-treino-header">
+    <div class="breadcrumb">
+      Painel &gt; <span class="breadcrumb-active">Cadastro de Treino</span>
+    </div>
+    <h1 class="page-title">Cadastro de Treino</h1>
+    <p class="page-subtitle">Cadastre o treino e defina o tipo e o nível recomendado.</p>
+  </header>
+
+  <section class="form-card">
+    <div *ngIf="successMessage" class="alert-success">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container" novalidate>
+      <div class="form-field">
+        <label class="label">Tipo de Treino</label>
+        <select
+          formControlName="tipoTreino"
+          class="input-text"
+          [class.input-error]="campoInvalido('tipoTreino')">
+          <option value="" disabled>Selecione o tipo de treino</option>
+          <option *ngFor="let tipo of tipos" [value]="idDoTipo(tipo)">
+            {{ tipo.nome }} - {{ tipo.descricao }}
+          </option>
+        </select>
+        <span *ngIf="campoInvalido('tipoTreino')" class="error-msg">
+          {{ obterMensagemErro('tipoTreino') }}
+        </span>
+      </div>
+
+      <div class="form-field">
+        <label class="label">Título</label>
+        <input
+          type="text"
+          formControlName="titulo"
+          placeholder="Informe o título do treino"
+          class="input-text"
+          [attr.maxlength]="LIMITE_TITULO"
+          [class.input-error]="campoInvalido('titulo')">
+        <span class="contador">{{ totalTitulo }} / {{ LIMITE_TITULO }}</span>
+        <span *ngIf="campoInvalido('titulo')" class="error-msg">
+          {{ obterMensagemErro('titulo') }}
+        </span>
+      </div>
+
+      <div class="form-field">
+        <label class="label">Descrição</label>
+        <textarea
+          formControlName="descricao"
+          placeholder="Descreva o treino"
+          class="input-text textarea"
+          rows="4"
+          [attr.maxlength]="LIMITE_DESCRICAO"
+          [class.input-error]="campoInvalido('descricao')"></textarea>
+        <span class="contador">{{ totalDescricao }} / {{ LIMITE_DESCRICAO }}</span>
+        <span *ngIf="campoInvalido('descricao')" class="error-msg">
+          {{ obterMensagemErro('descricao') }}
+        </span>
+      </div>
+
+      <div class="form-field">
+        <label class="label">Nível Recomendado</label>
+        <select
+          formControlName="nivelRecomendado"
+          class="input-text"
+          [class.input-error]="campoInvalido('nivelRecomendado')">
+          <option value="" disabled>Selecione o nível recomendado</option>
+          <option *ngFor="let nivel of niveis" [value]="nivel.valor">
+            {{ nivel.texto }}
+          </option>
+        </select>
+        <span *ngIf="campoInvalido('nivelRecomendado')" class="error-msg">
+          {{ obterMensagemErro('nivelRecomendado') }}
+        </span>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Salvando...' : 'Salvar Treino' }}
+      </button>
+    </form>
+  </section>
+</div>

@@ -38,6 +38,7 @@ export class AuthService {
         if (res?.token) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('usuario_nome', res.nome || '');
+          localStorage.setItem('usuario_id', String(res.id ?? ''));
           localStorage.setItem('usuario_email', res.email || '');
           localStorage.setItem('usuario_perfil', res.perfil || '');
         }
@@ -57,6 +58,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('usuario_id');
     localStorage.removeItem('usuario_nome');
     localStorage.removeItem('usuario_email');
     localStorage.removeItem('usuario_perfil');

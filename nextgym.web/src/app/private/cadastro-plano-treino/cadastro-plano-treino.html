@@ -81,6 +81,14 @@
       <button type="submit" class="btn-primary" [disabled]="isSubmitting">
         {{ isSubmitting ? 'Salvando...' : 'Salvar Treino' }}
       </button>
+
+        <button 
+          type="button" 
+          routerLink="/treinos/listagem-treinos" 
+          class="btn-secondary">
+          Cancelar
+        </button>
+      
     </form>
   </section>
 </div>

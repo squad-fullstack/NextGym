@@ -1,10 +1,10 @@
-
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { PlanoTreinoService, PlanoTreinoItem } from '../../../../core/services/plano-treino.service';
 
-interface Treino {
+export interface TreinoViewModel {
   id: number;
   nome: string;
   descricao: string;
@@ -18,7 +18,9 @@ interface Treino {
   templateUrl: './listagem-treinos.html',
   styleUrls: ['./listagem-treinos.css']
 })
-export class ListagemTreinosComponent {
+export class ListagemTreinosComponent implements OnInit {
+  private planoTreinoService = inject(PlanoTreinoService);
+  private cdr = inject(ChangeDetectorRef);
 
   termoBusca = '';
   filtroNivel = '';
@@ -26,35 +28,65 @@ export class ListagemTreinosComponent {
   isLoading = false;
   errorMessage = '';
 
-  treinos: Treino[] = [
-    {
-      id: 1,
-      nome: 'Treino A',
-      descricao: 'Peito, ombro e tríceps',
-      nivel: 'Iniciante'
-    },
-    {
-      id: 2,
-      nome: 'Treino B',
-      descricao: 'Costas e bíceps',
-      nivel: 'Intermediário'
-    },
-    {
-      id: 3,
-      nome: 'Treino C',
-      descricao: 'Pernas e glúteos',
-      nivel: 'Avançado'
-    },
-    {
-      id: 4,
-      nome: 'Treino D',
-      descricao: 'Condicionamento físico completo',
-      nivel: 'Atleta'
-    }
-  ];
+  treinos: TreinoViewModel[] = [];
 
-  get treinosFiltrados(): Treino[] {
-    const termo = this.termoBusca.trim().toLowerCase();
+  ngOnInit(): void {
+    this.carregarTreinos();
+  }
+
+  carregarTreinos(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.planoTreinoService.listar().subscribe({
+      next: (dados: any) => {
+        let listaBruta: any[] = [];
+
+        if (Array.isArray(dados)) {
+          listaBruta = dados;
+        } else if (dados && Array.isArray(dados.planos)) {
+          listaBruta = dados.planos;
+        } else if (dados && Array.isArray(dados.planosTreino)) {
+          listaBruta = dados.planosTreino;
+        } else if (dados && Array.isArray(dados.content)) {
+          listaBruta = dados.content;
+        } else if (dados && Array.isArray(dados.data)) {
+          listaBruta = dados.data;
+        }
+
+        this.treinos = listaBruta.map((item: any, index: number) => ({
+          id: item.idPlanoTreino ?? item.id ?? index + 1,
+          nome: item.titulo ?? item.nome ?? 'Sem Título',
+          descricao: item.descricao ?? 'Sem descrição informada',
+          nivel: this.formatarNivel(item.nivelRecomendado ?? item.nivel ?? '')
+        }));
+
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('Erro ao carregar treinos da API:', err);
+        this.isLoading = false;
+        this.errorMessage = 'Não foi possível carregar os treinos da API.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  private formatarNivel(valor: string): string {
+    const mapa: Record<string, string> = {
+      NUNCA_TREINOU: 'Nunca Treinou',
+      INICIANTE: 'Iniciante',
+      INTERMEDIARIO: 'Intermediário',
+      AVANCADO: 'Avançado',
+      ATLETA: 'Atleta'
+    };
+    return mapa[String(valor).toUpperCase()] || valor;
+  }
+
+  get treinosFiltrados(): TreinoViewModel[] {
+    const termo = (this.termoBusca || '').trim().toLowerCase();
+    const filtro = (this.filtroNivel || '').trim().toLowerCase();
 
     return this.treinos.filter(treino => {
       const correspondeTexto =
@@ -63,10 +95,10 @@ export class ListagemTreinosComponent {
         treino.descricao.toLowerCase().includes(termo);
 
       const correspondeNivel =
-        !this.filtroNivel ||
-        treino.nivel.toLowerCase() === this.filtroNivel.toLowerCase();
+        !filtro ||
+        treino.nivel.toLowerCase() === filtro;
 
-      return correspondeTexto && correspondeNivel;
+      return Boolean(correspondeTexto && correspondeNivel);
     });
   }
 
@@ -74,24 +106,20 @@ export class ListagemTreinosComponent {
     switch (nivel?.trim().toLowerCase()) {
       case 'iniciante':
         return 'nivel-iniciante';
-
       case 'intermediário':
       case 'intermediario':
         return 'nivel-intermediario';
-
       case 'avançado':
       case 'avancado':
         return 'nivel-avancado';
-
       case 'atleta':
         return 'nivel-atleta';
-
       default:
         return '';
     }
   }
 
-  visualizarTreino(treino: Treino): void {
+  visualizarTreino(treino: TreinoViewModel): void {
     alert(
       `Treino: ${treino.nome}\n` +
       `Grupo muscular: ${treino.descricao}\n` +
@@ -99,70 +127,31 @@ export class ListagemTreinosComponent {
     );
   }
 
-  editarTreino(treino: Treino): void {
-    const novoNome = prompt(
-      'Digite o nome do treino:',
-      treino.nome
-    );
+  editarTreino(treino: TreinoViewModel): void {
+    const novoNome = prompt('Digite o nome do treino:', treino.nome);
+    if (novoNome === null || !novoNome.trim()) return;
 
-    if (novoNome === null || !novoNome.trim()) {
-      return;
-    }
-
-    const novaDescricao = prompt(
-      'Digite os grupos musculares:',
-      treino.descricao
-    );
-
-    if (novaDescricao === null || !novaDescricao.trim()) {
-      return;
-    }
-
-    const niveis = [
-      'Iniciante',
-      'Intermediário',
-      'Avançado',
-      'Atleta'
-    ];
-
-    const novoNivel = prompt(
-      'Digite o nível: Iniciante, Intermediário, Avançado ou Atleta',
-      treino.nivel
-    );
-
-    if (
-      novoNivel === null ||
-      !niveis.some(
-        nivel => nivel.toLowerCase() === novoNivel.trim().toLowerCase()
-      )
-    ) {
-      if (novoNivel !== null) {
-        alert('Nível inválido. Nenhuma alteração foi salva.');
-      }
-      return;
-    }
+    const novaDescricao = prompt('Digite os grupos musculares:', treino.descricao);
+    if (novaDescricao === null || !novaDescricao.trim()) return;
 
     treino.nome = novoNome.trim();
     treino.descricao = novaDescricao.trim();
-    treino.nivel =
-      niveis.find(
-        nivel => nivel.toLowerCase() === novoNivel.trim().toLowerCase()
-      )!;
-
-    alert('Treino atualizado com sucesso!');
+    alert('Treino atualizado com sucesso localmente!');
   }
 
-  excluirTreino(treino: Treino): void {
-    const confirmar = confirm(
-      `Tem certeza que deseja excluir "${treino.nome}"?`
-    );
+  excluirTreino(treino: TreinoViewModel): void {
+    const confirmar = confirm(`Tem certeza que deseja excluir "${treino.nome}"?`);
+    if (!confirmar) return;
 
-    if (!confirmar) {
-      return;
-    }
-
-    this.treinos = this.treinos.filter(
-      item => item.id !== treino.id
-    );
+    this.planoTreinoService.excluir(treino.id).subscribe({
+      next: () => {
+        this.treinos = this.treinos.filter(item => item.id !== treino.id);
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.treinos = this.treinos.filter(item => item.id !== treino.id);
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

@@ -1,20 +1,20 @@
 <div class="home-container">
   <header class="home-header">
     <div class="header-info">
-      <div class="breadcrumb">
+      <nav class="breadcrumb" aria-label="Navegação estrutural">
         Painel &gt; <span class="breadcrumb-active">Visão Geral</span>
-      </div>
+      </nav>
       <h2 class="page-title">Bem-vindo ao NextGym</h2>
       <p class="page-subtitle">Resumo operacional e acesso rápido às principais rotinas.</p>
     </div>
 
     <div class="header-actions">
-      <div class="status-badge">
-        <span class="status-pulse"></span>
+      <div class="status-badge" role="status" aria-label="Estado do sistema: Online">
+        <span class="status-pulse" aria-hidden="true"></span>
         Sistema Online
       </div>
       <button routerLink="/alunos/cadastro-aluno" class="btn-primary">
-        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
         Nova Matrícula
@@ -22,50 +22,44 @@
     </div>
   </header>
 
-  <br>
-
-  <section class="metrics-grid">
-    <article class="metric-card">
+  <section class="metrics-grid" aria-label="Indicadores operacionais">
+    <article class="metric-card" role="region" aria-label="Total de alunos ativos">
       <span class="metric-label">Alunos Ativos</span>
       <div class="metric-value">
         <span *ngIf="!isLoading">{{ alunosAtivos }}</span>
         <span *ngIf="isLoading" class="metric-loading">Carregando...</span>
       </div>
-      <!-- <span class="metric-caption text-emerald">Matrículas ativas na base</span> -->
     </article>
-    <br>
-    <article class="metric-card">
+
+    <article class="metric-card" role="region" aria-label="Matrículas registadas no mês">
       <span class="metric-label">Matrículas no Mês</span>
       <div class="metric-value">
         <span *ngIf="!isLoading">{{ matriculasNoMes }}</span>
         <span *ngIf="isLoading" class="metric-loading">Carregando...</span>
       </div>
-      <!-- <span class="metric-caption text-slate">Registros cadastrados no sistema</span> -->
     </article>
   </section>
-  <br>
-  <section class="quick-actions-grid">
+
+  <section class="quick-actions-grid" aria-label="Ações rápidas e atalhos">
     <article class="action-card">
       <div class="action-content">
         <h3 class="action-title">Gerenciamento de Alunos</h3>
         <p class="action-description">Consulte a listagem completa, filtre por nível de experiência ou gerencie a base cadastrada.</p>
       </div>
       <div class="action-footer">
-        <a routerLink="/alunos/listagem-alunos" class="action-link">
+        <a routerLink="/alunos/listagem-alunos" class="action-link" aria-label="Aceder à listagem completa de alunos">
           Acessar listagem de alunos →
         </a>
       </div>
     </article>
 
-    <br>
-    
     <article class="action-card">
       <div class="action-content">
         <h3 class="action-title">Nova Matrícula</h3>
         <p class="action-description">Cadastre um novo cliente com dados pessoais, nível de experiência e restrições médicas.</p>
       </div>
       <div class="action-footer">
-        <a routerLink="/alunos/cadastro-aluno" class="action-link">
+        <a routerLink="/alunos/cadastro-aluno" class="action-link" aria-label="Abrir formulário para efetuar uma nova matrícula">
           Abrir formulário de matrícula →
         </a>
       </div>

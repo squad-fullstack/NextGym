@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { PlanoTreinoService } from '../../core/services/plano-treino.service';
 import { NIVEIS_RECOMENDADOS, TipoTreinoOpcao, PlanoTreinoPayload } from '../../core/models/plano-treino.models';
 
@@ -31,12 +32,13 @@ export const TIPOS_TREINO_PADRAO: TipoTreinoOpcao[] = [
 @Component({
   selector: 'app-cadastro-plano-treino',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './cadastro-plano-treino.html',
   styleUrls: ['./cadastro-plano-treino.css']
 })
 export class CadastroPlanoTreinoComponent implements OnInit {
   private fb = inject(FormBuilder);
+  private router = inject(Router);
   private planoTreinoService = inject(PlanoTreinoService);
 
   readonly LIMITE_TITULO = 100;
@@ -98,41 +100,46 @@ export class CadastroPlanoTreinoComponent implements OnInit {
     return 'Valor inválido.';
   }
 
+  voltarParaListagem(): void {
+    this.router.navigate(['/treinos/listagem-treinos']);
+  }
+
   onSubmit(): void {
-  if (this.form.invalid) {
-    this.form.markAllAsTouched();
-    return;
-  }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
-  // Tenta obter o ID do professor/usuário salvo no login
-  const idProfessor = Number(
-    localStorage.getItem('usuario_id') || 
-    localStorage.getItem('id') || 
-    localStorage.getItem('userId')
-  );
+    const idProfessor = Number(
+      localStorage.getItem('usuario_id') || 
+      localStorage.getItem('id') || 
+      localStorage.getItem('userId')
+    );
 
-  if (!idProfessor || isNaN(idProfessor)) {
-    this.errorMessage = 'Não foi possível identificar o professor autenticado. Faça login novamente.';
-    return;
-  }
+    if (!idProfessor || isNaN(idProfessor)) {
+      this.errorMessage = 'Não foi possível identificar o professor autenticado. Faça login novamente.';
+      return;
+    }
 
-  this.isSubmitting = true;
-  this.errorMessage = '';
-  this.successMessage = '';
+    this.isSubmitting = true;
+    this.errorMessage = '';
+    this.successMessage = '';
 
-  const payload: PlanoTreinoPayload = {
-    idTipoTreino: Number(this.form.value.tipoTreino),
-    idProfessorCriador: idProfessor, // <- corrigido aqui
-    titulo: this.form.value.titulo.trim(),
-    descricao: this.form.value.descricao.trim(),
-    nivelRecomendado: this.form.value.nivelRecomendado
-  };
+    const payload: PlanoTreinoPayload = {
+      idTipoTreino: Number(this.form.value.tipoTreino),
+      idProfessorCriador: idProfessor,
+      titulo: this.form.value.titulo.trim(),
+      descricao: this.form.value.descricao.trim(),
+      nivelRecomendado: this.form.value.nivelRecomendado
+    };
 
-  this.planoTreinoService.criar(payload).subscribe({
+    this.planoTreinoService.criar(payload).subscribe({
       next: () => {
         this.isSubmitting = false;
         this.successMessage = 'Plano de treino cadastrado com sucesso!';
         this.form.reset({ tipoTreino: '', titulo: '', descricao: '', nivelRecomendado: '' });
+  
+        this.router.navigate(['/treinos/listagem-treinos']);
       },
       error: (err: any) => {
         console.error('Erro ao cadastrar plano de treino:', err);

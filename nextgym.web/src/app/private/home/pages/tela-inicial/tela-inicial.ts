@@ -1,8 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AlunoService } from '../../../../core/services/aluno.service';
-import { Aluno } from '../../../../core/models/aluno.models';
 
 @Component({
   selector: 'app-tela-inicial',
@@ -13,46 +12,46 @@ import { Aluno } from '../../../../core/models/aluno.models';
 })
 export class TelaInicialComponent implements OnInit {
   private alunoService = inject(AlunoService);
+  private cdr = inject(ChangeDetectorRef);
 
-  alunosAtivos: number = 0;
-  matriculasNoMes: number = 0;
-  isLoading: boolean = false;
+  alunosAtivos = 0;
+  matriculasNoMes = 0;
+  isLoading = false;
 
   ngOnInit(): void {
-    this.carregarMetricas();
+    this.carregarResumo();
   }
 
-  carregarMetricas(): void {
+  carregarResumo(): void {
     this.isLoading = true;
 
     this.alunoService.listarTodos().subscribe({
-      next: (alunos: Aluno[]) => {
-        this.calcularMetricas(alunos);
+      next: (data: any) => {
+        let lista: any[] = [];
+
+        if (Array.isArray(data)) {
+          lista = data;
+        } else if (data && Array.isArray(data.alunos)) {
+          lista = data.alunos;
+        } else if (data && Array.isArray(data.content)) {
+          lista = data.content;
+        } else if (data && Array.isArray(data.data)) {
+          lista = data.data;
+        }
+
+        this.calcularMetricas(lista);
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Erro ao carregar métricas:', err);
+      error: () => {
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
-  private calcularMetricas(alunos: Aluno[]): void {
-    this.alunosAtivos = alunos.filter(a => a.ativo === true).length;
-
-    const agora = new Date();
-    const anoAtual = agora.getFullYear();
-    const mesAtual = agora.getMonth();
-
-    const comData = alunos.filter(a => !!a.dataCriacao);
-
-    if (comData.length > 0) {
-      this.matriculasNoMes = comData.filter(a => {
-        const data = new Date(a.dataCriacao!);
-        return data.getFullYear() === anoAtual && data.getMonth() === mesAtual;
-      }).length;
-    } else {
-      this.matriculasNoMes = alunos.length;
-    }
+  calcularMetricas(alunos: any[]): void {
+    this.alunosAtivos = alunos.filter((a) => a.ativo === true).length;
+    this.matriculasNoMes = alunos.length;
   }
 }

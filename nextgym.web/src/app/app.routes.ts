@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthLayout } from './core/layouts/auth-layout/auth-layout';
-import { LoginProfissionalComponent } from './private/auth/pages/login-Profissional/login-profissional';
+import { LoginProfissionalComponent } from './private/auth/pages/login-profissional/login-profissional';
 import { CadastroProfissionalComponent } from './private/auth/pages/cadastro-profissional/cadastro-profissional';
 import { authGuard } from './core/guards/auth-guard';
 import { SidebarComponent } from './core/layouts/sidebar/sidebar';
@@ -11,7 +11,6 @@ export const routes: Routes = [
     pathMatch: 'full',
     redirectTo: 'home'
   },
-
   {
     path: 'auth',
     component: AuthLayout,
@@ -21,7 +20,6 @@ export const routes: Routes = [
       { path: '', redirectTo: 'login', pathMatch: 'full' }
     ]
   },
-
   {
     path: '',
     component: SidebarComponent,
@@ -39,20 +37,10 @@ export const routes: Routes = [
             path: 'listagem-alunos',
             loadComponent: () => import('./private/alunos/pages/listagem-alunos/listagem-alunos').then(m => m.ListagemAlunoComponent)
           },
-
-
           {
             path: 'cadastro-aluno',
             loadComponent: () => import('./private/alunos/pages/matricula-aluno/matricula-aluno').then(m => m.MatriculaAlunoComponent)
           },
-
-          {
-              path: 'listagem-treinos',
-              loadComponent: () =>
-                import('./private/alunos/pages/listagem-treinos/listagem-treinos')
-                  .then(m => m.ListagemTreinosComponent)
-          },
-
           {
             path: '',
             redirectTo: 'listagem-alunos',
@@ -61,12 +49,29 @@ export const routes: Routes = [
         ]
       },
       {
-        path: 'plano-treino',
-        loadComponent: () => import('./private/cadastro-plano-treino/cadastro-plano-treino').then(m => m.CadastroPlanoTreinoComponent)
+        path: 'treinos',
+        children: [
+          {
+            path: 'listagem-treinos',
+            loadComponent: () =>
+              import('./private/alunos/pages/listagem-treinos/listagem-treinos')
+                .then(m => m.ListagemTreinosComponent)
+          },
+          {
+            path: 'cadastro-plano-treino',
+            loadComponent: () =>
+              import('./private/cadastro-plano-treino/cadastro-plano-treino')
+                .then(m => m.CadastroPlanoTreinoComponent)
+          },
+          {
+            path: '',
+            redirectTo: 'listagem-treinos',
+            pathMatch: 'full'
+          }
+        ]
       }
     ]
   },
-
   {
     path: '**',
     redirectTo: 'home'

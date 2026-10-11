@@ -39,9 +39,11 @@
               (change)="aplicarFiltros()"
               class="filter-select">
         <option value="">Todos os Níveis</option>
+        <option value="NUNCA_TREINOU">Nunca Treinou</option>
         <option value="INICIANTE">Iniciante</option>
         <option value="INTERMEDIARIO">Intermediário</option>
         <option value="AVANCADO">Avançado</option>
+        <option value="ATLETA">Atleta</option>
       </select>
       <svg class="select-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -95,7 +97,7 @@
 
             <td class="td-cell">
               <span class="level-badge capitalize">
-                {{ aluno.nivelExperiencia ? aluno.nivelExperiencia.toLowerCase() : 'Não informado' }}
+                {{ aluno.nivelExperiencia || 'Não informado' }}
               </span>
             </td>
 

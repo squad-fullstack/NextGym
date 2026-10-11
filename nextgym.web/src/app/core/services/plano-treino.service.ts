@@ -6,8 +6,8 @@ import { PlanoTreinoPayload, TipoTreinoOpcao } from '../models/plano-treino.mode
 @Injectable({ providedIn: 'root' })
 export class PlanoTreinoService {
   private http = inject(HttpClient);
-  private urlPlanos = 'COLOQUE_AQUI_O_ENDERECO_DO_POST_PLANO';
-  private urlTipos = 'COLOQUE_AQUI_O_ENDERECO_DO_GET_TIPOS';
+  private urlPlanos = 'https://academia-api-0wxl.onrender.com/api/planos-treino';
+  private urlTipos = 'https://academia-api-0wxl.onrender.com/api/tipos-treino';
 
   listarTipos(): Observable<TipoTreinoOpcao[]> {
     return this.http.get<TipoTreinoOpcao[]>(this.urlTipos);

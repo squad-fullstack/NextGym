@@ -1,8 +1,32 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PlanoTreinoService } from '../../../../core/services/plano-treino.service';
-import { NIVEIS_RECOMENDADOS, TipoTreinoOpcao } from '../../../../core/models/plano-treino.models';
+import { PlanoTreinoService } from '../../core/services/plano-treino.service';
+import { NIVEIS_RECOMENDADOS, TipoTreinoOpcao, PlanoTreinoPayload } from '../../core/models/plano-treino.models';
+
+export enum TipoTreinoEnum {
+  CALISTENIA = 1,
+  HIPERTROFIA = 2,
+  EMAGRECIMENTO = 3
+}
+
+export const TIPOS_TREINO_PADRAO: TipoTreinoOpcao[] = [
+  { 
+    id: TipoTreinoEnum.CALISTENIA, 
+    nome: 'Calistenia', 
+    descricao: 'Treinos focados no peso corporal e domínio do movimento' 
+  },
+  { 
+    id: TipoTreinoEnum.HIPERTROFIA, 
+    nome: 'Hipertrofia', 
+    descricao: 'Treinos voltados para hipertrofia e ganho de massa' 
+  },
+  { 
+    id: TipoTreinoEnum.EMAGRECIMENTO, 
+    nome: 'Emagrecimento', 
+    descricao: 'Treinos com foco em queima calórica e condicionamento' 
+  }
+];
 
 @Component({
   selector: 'app-cadastro-plano-treino',
@@ -19,7 +43,7 @@ export class CadastroPlanoTreinoComponent implements OnInit {
   readonly LIMITE_DESCRICAO = 250;
 
   niveis = NIVEIS_RECOMENDADOS;
-  tipos: TipoTreinoOpcao[] = [];
+  tipos: TipoTreinoOpcao[] = TIPOS_TREINO_PADRAO;
 
   isSubmitting = false;
   errorMessage = '';
@@ -34,10 +58,13 @@ export class CadastroPlanoTreinoComponent implements OnInit {
 
   ngOnInit(): void {
     this.planoTreinoService.listarTipos().subscribe({
-      next: (lista) => (this.tipos = lista),
+      next: (lista) => {
+        if (lista && lista.length > 0) {
+          this.tipos = lista;
+        }
+      },
       error: (err: any) => {
-        console.error('Erro ao carregar tipos de treino:', err);
-        this.errorMessage = 'Não foi possível carregar os tipos de treino.';
+        console.warn('API indisponível, utilizando tipos padrão locais:', err);
       }
     });
   }
@@ -72,30 +99,36 @@ export class CadastroPlanoTreinoComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
+  }
 
-    const idFuncionario = Number(localStorage.getItem('usuario_id'));
-    if (!idFuncionario) {
-      this.errorMessage = 'Não foi possível identificar o funcionário. Faça login novamente.';
-      return;
-    }
+  // Tenta obter o ID do professor/usuário salvo no login
+  const idProfessor = Number(
+    localStorage.getItem('usuario_id') || 
+    localStorage.getItem('id') || 
+    localStorage.getItem('userId')
+  );
 
-    this.isSubmitting = true;
-    this.errorMessage = '';
-    this.successMessage = '';
+  if (!idProfessor || isNaN(idProfessor)) {
+    this.errorMessage = 'Não foi possível identificar o professor autenticado. Faça login novamente.';
+    return;
+  }
 
-    const payload = {
-      idTipoTreino: Number(this.form.value.tipoTreino),
-      idFuncionario: idFuncionario,
-      titulo: this.form.value.titulo.trim(),
-      descricao: this.form.value.descricao.trim(),
-      nivelRecomendado: this.form.value.nivelRecomendado
-    };
+  this.isSubmitting = true;
+  this.errorMessage = '';
+  this.successMessage = '';
 
-    this.planoTreinoService.criar(payload).subscribe({
+  const payload: PlanoTreinoPayload = {
+    idTipoTreino: Number(this.form.value.tipoTreino),
+    idProfessorCriador: idProfessor, // <- corrigido aqui
+    titulo: this.form.value.titulo.trim(),
+    descricao: this.form.value.descricao.trim(),
+    nivelRecomendado: this.form.value.nivelRecomendado
+  };
+
+  this.planoTreinoService.criar(payload).subscribe({
       next: () => {
         this.isSubmitting = false;
         this.successMessage = 'Plano de treino cadastrado com sucesso!';
@@ -104,7 +137,7 @@ export class CadastroPlanoTreinoComponent implements OnInit {
       error: (err: any) => {
         console.error('Erro ao cadastrar plano de treino:', err);
         this.isSubmitting = false;
-        this.errorMessage = 'Erro ao cadastrar plano de treino. Tente novamente.';
+        this.errorMessage = err?.error?.message || 'Erro ao cadastrar plano de treino. Verifique os dados preenchidos.';
       }
     });
   }

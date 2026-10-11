@@ -61,12 +61,8 @@ export const routes: Routes = [
         ]
       },
       {
-        path: 'tipo-treino',
-        loadComponent: () => import('./private/auth/pages/cadastro-tipo-treino/cadastro-tipo-treino').then(m => m.CadastroTipoTreinoComponent)
-      },
-      {
         path: 'plano-treino',
-        loadComponent: () => import('./private/auth/pages/cadastro-plano-treino/cadastro-plano-treino').then(m => m.CadastroPlanoTreinoComponent)
+        loadComponent: () => import('./private/cadastro-plano-treino/cadastro-plano-treino').then(m => m.CadastroPlanoTreinoComponent)
       }
     ]
   },

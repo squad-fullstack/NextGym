@@ -4,7 +4,7 @@
       <div class="breadcrumb">
         Painel &gt; <span class="breadcrumb-active">Visão Geral</span>
       </div>
-      <h1 class="page-title">Bem-vindo ao NextGym</h1>
+      <h2 class="page-title">Bem-vindo ao NextGym</h2>
       <p class="page-subtitle">Resumo operacional e acesso rápido às principais rotinas.</p>
     </div>
 
@@ -22,6 +22,8 @@
     </div>
   </header>
 
+  <br>
+
   <section class="metrics-grid">
     <article class="metric-card">
       <span class="metric-label">Alunos Ativos</span>
@@ -29,23 +31,23 @@
         <span *ngIf="!isLoading">{{ alunosAtivos }}</span>
         <span *ngIf="isLoading" class="metric-loading">Carregando...</span>
       </div>
-      <span class="metric-caption text-emerald">Matrículas ativas na base</span>
+      <!-- <span class="metric-caption text-emerald">Matrículas ativas na base</span> -->
     </article>
-
+    <br>
     <article class="metric-card">
       <span class="metric-label">Matrículas no Mês</span>
       <div class="metric-value">
         <span *ngIf="!isLoading">{{ matriculasNoMes }}</span>
         <span *ngIf="isLoading" class="metric-loading">Carregando...</span>
       </div>
-      <span class="metric-caption text-slate">Registros cadastrados no sistema</span>
+      <!-- <span class="metric-caption text-slate">Registros cadastrados no sistema</span> -->
     </article>
   </section>
-
+  <br>
   <section class="quick-actions-grid">
     <article class="action-card">
       <div class="action-content">
-        <h2 class="action-title">Gerenciamento de Alunos</h2>
+        <h3 class="action-title">Gerenciamento de Alunos</h3>
         <p class="action-description">Consulte a listagem completa, filtre por nível de experiência ou gerencie a base cadastrada.</p>
       </div>
       <div class="action-footer">
@@ -55,9 +57,11 @@
       </div>
     </article>
 
+    <br>
+    
     <article class="action-card">
       <div class="action-content">
-        <h2 class="action-title">Nova Matrícula</h2>
+        <h3 class="action-title">Nova Matrícula</h3>
         <p class="action-description">Cadastre um novo cliente com dados pessoais, nível de experiência e restrições médicas.</p>
       </div>
       <div class="action-footer">

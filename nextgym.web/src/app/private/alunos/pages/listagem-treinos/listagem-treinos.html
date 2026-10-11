@@ -69,7 +69,6 @@
     </div>
   </section>
 
-  <!-- TABELA -->
   <div class="table-card">
     <div class="table-responsive">
       <table class="data-table">
@@ -85,7 +84,6 @@
         </thead>
 
         <tbody>
-          <!-- LISTA DE TREINOS -->
           <tr
             *ngFor="let treino of treinosFiltrados"
             class="table-row">
@@ -100,7 +98,6 @@
               </div>
             </td>
 
-            <!-- NÍVEL COM COR -->
             <td class="td-cell">
               <span
                 class="nivel-badge"
@@ -109,18 +106,15 @@
               </span>
             </td>
 
-            <!-- STATUS -->
             <td class="td-cell">
               <span class="tag-status status-active">
                 Ativo
               </span>
             </td>
 
-            <!-- AÇÕES -->
             <td class="td-cell text-right">
               <div class="acoes-treino">
 
-                <!-- VISUALIZAR -->
                 <button
                   type="button"
                   class="btn-acao btn-visualizar"
@@ -135,7 +129,6 @@
                   </svg>
                 </button>
 
-                <!-- EDITAR -->
                 <button
                   type="button"
                   class="btn-acao btn-editar"
@@ -150,7 +143,6 @@
                   </svg>
                 </button>
 
-                <!-- EXCLUIR -->
                 <button
                   type="button"
                   class="btn-acao btn-excluir"
@@ -166,7 +158,6 @@
             </td>
           </tr>
 
-          <!-- LISTA VAZIA -->
           <tr *ngIf="treinosFiltrados.length === 0">
             <td colspan="5" class="empty-cell text-muted">
               Nenhum treino encontrado com os filtros informados.

@@ -39,10 +39,20 @@ export const routes: Routes = [
             path: 'listagem-alunos',
             loadComponent: () => import('./private/alunos/pages/listagem-alunos/listagem-alunos').then(m => m.ListagemAlunoComponent)
           },
+
+
           {
             path: 'cadastro-aluno',
             loadComponent: () => import('./private/alunos/pages/matricula-aluno/matricula-aluno').then(m => m.MatriculaAlunoComponent)
           },
+
+          {
+              path: 'listagem-treinos',
+              loadComponent: () =>
+                import('./private/alunos/pages/listagem-treinos/listagem-treinos')
+                  .then(m => m.ListagemTreinosComponent)
+          },
+
           {
             path: '',
             redirectTo: 'listagem-alunos',

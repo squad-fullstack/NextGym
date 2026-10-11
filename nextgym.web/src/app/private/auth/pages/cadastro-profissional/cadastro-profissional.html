@@ -5,8 +5,7 @@
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container" novalidate>
-  
-  <!-- Nome -->
+
   <div class="form-field">
     <label class="label">Nome</label>
     <input 
@@ -20,7 +19,6 @@
     </span>
   </div>
 
-  <!-- E-mail -->
   <div class="form-field">
     <label class="label">E-mail</label>
     <input 
@@ -34,7 +32,6 @@
     </span>
   </div>
 
-  <!-- Senha -->
   <div class="form-field">
     <label class="label">Senha</label>
     <div class="password-wrapper">
@@ -63,7 +60,6 @@
     </span>
   </div>
 
-  <!-- Registro Acadêmico -->
   <div class="form-field">
     <label class="label">Registro Acadêmico</label>
     <input 
@@ -77,14 +73,11 @@
     </span>
   </div>
 
-  <!-- Perfil -->
   <div class="form-field">
     <label class="label">Perfil</label>
     <div class="select-wrapper">
       <select formControlName="perfil" class="input-select">
         <option value="PROFESSOR">Professor</option>
-        <option value="RECEPCAO">Recepção</option>
-        <option value="ADMINISTRADOR">Administrador</option>
       </select>
       <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -92,12 +85,10 @@
     </div>
   </div>
 
-  <!-- Botão Submit -->
   <button type="submit" [disabled]="isSubmitting" class="btn-submit">
     {{ isSubmitting ? 'Cadastrando...' : 'Cadastrar' }}
   </button>
 
-  <!-- Rodapé Login -->
   <div class="footer-link">
     <span>Já tem uma conta?</span>
     <a routerLink="/auth/login" class="link-bold">Faça login aqui</a>

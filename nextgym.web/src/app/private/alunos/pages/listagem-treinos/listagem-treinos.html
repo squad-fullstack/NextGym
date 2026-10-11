@@ -1,4 +1,3 @@
-
 <div class="alunos-container">
 
   <header class="alunos-header">
@@ -20,20 +19,18 @@
         Sistema Online
       </div>
 
-      <button
-        type="button"
-        routerLink="/alunos/cadastro-aluno"
+      <a
+        routerLink="/treinos/cadastro-plano-treino"
         class="btn-primary">
         <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M12 4v16m8-8H4"/>
         </svg>
         Novo Treino
-      </button>
+      </a>
     </div>
   </header>
 
-  <!-- FILTROS -->
   <section class="filters-card">
     <div class="search-wrapper">
       <input
@@ -56,6 +53,7 @@
         aria-label="Filtrar por nível">
 
         <option value="">Todos os Níveis</option>
+        <option value="Nunca Treinou">Nunca Treinou</option>
         <option value="Iniciante">Iniciante</option>
         <option value="Intermediário">Intermediário</option>
         <option value="Avançado">Avançado</option>
@@ -76,7 +74,7 @@
         <thead>
           <tr>
             <th class="th-cell">Treino</th>
-            <th class="th-cell">Grupo Muscular</th>
+            <th class="th-cell">Descrição</th>
             <th class="th-cell">Nível</th>
             <th class="th-cell">Status</th>
             <th class="th-cell text-right">Ações</th>
@@ -84,6 +82,21 @@
         </thead>
 
         <tbody>
+          <tr *ngIf="isLoading">
+            <td colspan="5" class="empty-cell text-muted">
+              Carregando planos de treino...
+            </td>
+          </tr>
+
+          <tr *ngIf="!isLoading && errorMessage">
+            <td colspan="5" class="error-cell">
+              <p class="error-message">{{ errorMessage }}</p>
+              <button (click)="carregarTreinos()" class="btn-retry">
+                Tentar novamente
+              </button>
+            </td>
+          </tr>
+
           <tr
             *ngFor="let treino of treinosFiltrados"
             class="table-row">
@@ -114,21 +127,6 @@
 
             <td class="td-cell text-right">
               <div class="acoes-treino">
-
-                <button
-                  type="button"
-                  class="btn-acao btn-visualizar"
-                  title="Visualizar treino"
-                  aria-label="Visualizar treino"
-                  (click)="visualizarTreino(treino)">
-                  <svg viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/>
-                    <circle cx="12" cy="12" r="3"/>
-                  </svg>
-                </button>
-
                 <button
                   type="button"
                   class="btn-acao btn-editar"
@@ -142,23 +140,11 @@
                     <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>
                   </svg>
                 </button>
-
-                <button
-                  type="button"
-                  class="btn-acao btn-excluir"
-                  title="Excluir treino"
-                  aria-label="Excluir treino"
-                  (click)="excluirTreino(treino)">
-                   <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                </svg>
-                </button>
-
               </div>
             </td>
           </tr>
 
-          <tr *ngIf="treinosFiltrados.length === 0">
+          <tr *ngIf="!isLoading && !errorMessage && treinosFiltrados.length === 0">
             <td colspan="5" class="empty-cell text-muted">
               Nenhum treino encontrado com os filtros informados.
             </td>

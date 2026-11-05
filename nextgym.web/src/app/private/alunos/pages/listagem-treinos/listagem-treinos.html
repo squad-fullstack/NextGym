@@ -9,7 +9,7 @@
       <h1 class="page-title">Gestão de Treinos</h1>
 
       <p class="page-subtitle">
-        Organize os planos de treino e consulte seus níveis e grupos musculares.
+        Organize os planos de treino e acompanhe os alunos vinculados a cada um.
       </p>
     </div>
 
@@ -67,91 +67,84 @@
     </div>
   </section>
 
-  <div class="table-card">
-    <div class="table-responsive">
-      <table class="data-table">
+  <div *ngIf="isLoading" class="grupo-aviso">
+    Carregando planos de treino...
+  </div>
 
-        <thead>
-          <tr>
-            <th class="th-cell">Treino</th>
-            <th class="th-cell">Descrição</th>
-            <th class="th-cell">Nível</th>
-            <th class="th-cell">Status</th>
-            <th class="th-cell text-right">Ações</th>
-          </tr>
-        </thead>
+  <div *ngIf="!isLoading && errorMessage" class="grupo-aviso grupo-erro">
+    <p class="error-message">{{ errorMessage }}</p>
+    <button (click)="carregarTreinos()" class="btn-retry">
+      Tentar novamente
+    </button>
+  </div>
 
-        <tbody>
-          <tr *ngIf="isLoading">
-            <td colspan="5" class="empty-cell text-muted">
-              Carregando planos de treino...
-            </td>
-          </tr>
+  <div class="grupos-lista">
+    <section *ngFor="let treino of treinosFiltrados" class="grupo-treino">
 
-          <tr *ngIf="!isLoading && errorMessage">
-            <td colspan="5" class="error-cell">
-              <p class="error-message">{{ errorMessage }}</p>
-              <button (click)="carregarTreinos()" class="btn-retry">
-                Tentar novamente
-              </button>
-            </td>
-          </tr>
+      <div class="grupo-cabecalho">
+        <div class="grupo-info">
+          <div class="grupo-titulo-linha">
+            <h2 class="grupo-titulo">{{ treino.nome }}</h2>
+            <span class="nivel-badge" [ngClass]="classeNivel(treino.nivel)">
+              {{ treino.nivel || 'Não informado' }}
+            </span>
+          </div>
+          <p class="grupo-descricao">{{ treino.descricao }}</p>
+        </div>
 
-          <tr
-            *ngFor="let treino of treinosFiltrados"
-            class="table-row">
+        <div class="grupo-acoes">
+          <button
+            type="button"
+            class="btn-vincular"
+            (click)="abrirPopupVincular(treino)">
+            Vincular Aluno
+          </button>
 
-            <td class="td-cell font-medium text-main">
-              {{ treino.nome }}
-            </td>
+          <button
+            type="button"
+            class="btn-acao btn-editar"
+            title="Editar treino"
+            aria-label="Editar treino"
+            (click)="editarTreino(treino)">
+            <svg viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/>
+              <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
 
-            <td class="td-cell">
-              <div class="contact-treino">
-                {{ treino.descricao }}
-              </div>
-            </td>
+      <div class="grupo-alunos">
+        <div class="grupo-alunos-titulo">
+          Alunos vinculados ({{ treino.alunos.length }})
+        </div>
 
-            <td class="td-cell">
-              <span
-                class="nivel-badge"
-                [ngClass]="classeNivel(treino.nivel)">
-                {{ treino.nivel || 'Não informado' }}
-              </span>
-            </td>
+        <ul *ngIf="treino.alunos.length > 0" class="alunos-sublista">
+          <li *ngFor="let aluno of treino.alunos" class="aluno-item">
+            <div>
 
-            <td class="td-cell">
-              <span class="tag-status status-active">
-                Ativo
-              </span>
-            </td>
 
-            <td class="td-cell text-right">
-              <div class="acoes-treino">
-                <button
-                  type="button"
-                  class="btn-acao btn-editar"
-                  title="Editar treino"
-                  aria-label="Editar treino"
-                  (click)="editarTreino(treino)">
-                  <svg viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 20h9"/>
-                    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
 
-          <tr *ngIf="!isLoading && !errorMessage && treinosFiltrados.length === 0">
-            <td colspan="5" class="empty-cell text-muted">
-              Nenhum treino encontrado com os filtros informados.
-            </td>
-          </tr>
+                            <div class="aluno-nome">{{ aluno.nome }}</div>
+              <div class="aluno-email">{{ aluno.email }}</div>
+            </div>
+            <div class="aluno-data">Início: {{ aluno.dataInicio }}</div>
+          </li>
+        </ul>
 
-        </tbody>
-      </table>
-    </div>
+        <p *ngIf="treino.alunos.length === 0" class="sem-alunos">
+          Nenhum aluno vinculado a este treino.
+        </p>
+      </div>
+
+    </section>
+  </div>
+
+  <div
+    *ngIf="!isLoading && !errorMessage && treinosFiltrados.length === 0"
+    class="grupo-aviso">
+    Nenhum treino encontrado com os filtros informados.
   </div>
 </div>

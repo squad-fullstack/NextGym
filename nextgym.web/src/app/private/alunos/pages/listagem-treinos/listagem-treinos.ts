@@ -2,13 +2,21 @@ import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { PlanoTreinoService, PlanoTreinoItem } from '../../../../core/services/plano-treino.service';
+import { PlanoTreinoService } from '../../../../core/services/plano-treino.service';
+
+export interface AlunoVinculado {
+  id: number;
+  nome: string;
+  email: string;
+  dataInicio: string;
+}
 
 export interface TreinoViewModel {
   id: number;
   nome: string;
   descricao: string;
   nivel: string;
+  alunos: AlunoVinculado[];
 }
 
 @Component({
@@ -58,7 +66,9 @@ export class ListagemTreinosComponent implements OnInit {
           id: item.idPlanoTreino ?? item.id ?? index + 1,
           nome: item.titulo ?? item.nome ?? 'Sem Título',
           descricao: item.descricao ?? 'Sem descrição informada',
-          nivel: this.formatarNivel(item.nivelRecomendado ?? item.nivel ?? '')
+          nivel: this.formatarNivel(item.nivelRecomendado ?? item.nivel ?? ''),
+          // TODO: trocar pelos alunos reais quando o VinculoService do Wendell estiver pronto
+          alunos: this.alunosDeExemplo(index)
         }));
 
         this.isLoading = false;
@@ -71,6 +81,20 @@ export class ListagemTreinosComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  // DADOS DE EXEMPLO (temporário)
+  private alunosDeExemplo(posicao: number): AlunoVinculado[] {
+    const exemplos: AlunoVinculado[][] = [
+      [
+        { id: 1, nome: 'Maria Souza', email: 'maria@email.com', dataInicio: '01/11/2026' },
+        { id: 2, nome: 'João Lima', email: 'joao@email.com', dataInicio: '03/11/2026' }
+      ],
+      [
+        { id: 3, nome: 'Ana Costa', email: 'ana@email.com', dataInicio: '02/11/2026' }
+      ]
+    ];
+    return exemplos[posicao] ?? [];
   }
 
   private formatarNivel(valor: string): string {
@@ -119,12 +143,9 @@ export class ListagemTreinosComponent implements OnInit {
     }
   }
 
-  visualizarTreino(treino: TreinoViewModel): void {
-    alert(
-      `Treino: ${treino.nome}\n` +
-      `Grupo muscular: ${treino.descricao}\n` +
-      `Nível: ${treino.nivel}`
-    );
+  abrirPopupVincular(treino: TreinoViewModel): void {
+    // TODO: abrir o popup_vincular do Wendell passando este treino
+    alert(`Em breve: vincular aluno ao treino "${treino.nome}"`);
   }
 
   editarTreino(treino: TreinoViewModel): void {

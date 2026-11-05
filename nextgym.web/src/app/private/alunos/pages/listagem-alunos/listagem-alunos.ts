@@ -46,6 +46,16 @@ export class ListagemAlunoComponent implements OnInit {
         } else if (data && Array.isArray(data.data)) {
           lista = data.data;
         }
+      
+        // ADICIONEI ESSS LINHAS PARA GERAR DADOS FICTÍCIOS DE TREINO:
+        lista = lista.map((aluno: any, index: number) => {
+          const treinosFicticios = ['Hipertrofia A', 'Fullbody', 'Resistência', 'Funcional', 'Cardio & Core'];
+          return {
+            ...aluno,
+            nomeTreino: aluno.nomeTreino || aluno.treino || treinosFicticios[index % treinosFicticios.length]
+          };
+        });
+
 
         this.alunos = lista;
         this.alunosFiltrados = [...lista];

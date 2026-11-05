@@ -19,6 +19,13 @@
         </svg>
         Novo Aluno
       </button>
+
+      <button routerLink="" class="btn-secondary">
+        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Vincular Treino
+      </button>
     </div>
   </header>
 
@@ -58,6 +65,9 @@
           <tr>
             <th class="th-cell">Nome do Aluno</th>
             <th class="th-cell">Contato</th>
+            <!-- Adicione a coluna Treino aqui -->
+            <th class="th-cell">Treino</th>
+
             <th class="th-cell">Nível</th>
             <th class="th-cell">Status</th>
             <th class="th-cell text-right">Ações</th>
@@ -95,9 +105,18 @@
               <div class="contact-phone">{{ aluno.telefone }}</div>
             </td>
 
+
+            <!-- Célula do Treino -->
+            <td class="td-cell">
+              <span class="text-main">
+               {{ $any(aluno).nomeTreino || $any(aluno).treino || 'Treino A - Hipertrofia' }}
+              </span>
+            </td>
+
+
             <td class="td-cell">
               <span class="level-badge capitalize">
-                {{ aluno.nivelExperiencia || 'Não informado' }}
+                {{ $any(aluno).nivelExperiencia || $any(aluno).nivel || 'Não informado' }}
               </span>
             </td>
 
@@ -107,6 +126,7 @@
               </span>
             </td>
 
+            
             <td class="td-cell text-right">
               <button (click)="deletarAluno(aluno.id)" title="Excluir aluno" class="btn-action-delete">
                 <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">

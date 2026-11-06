@@ -3,15 +3,24 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { PlanoTreinoService, PlanoTreinoItem } from '../../../../core/services/plano-treino.service';
-import {  VinculoTreinoComponent,  VinculoPayload,  AlunoOption,  PlanoTreinoOption } from '../../../../shared/vinculo-treinoAluno/vinculo-treinoAluno';
+import { VinculoTreinoComponent, VinculoPayload, AlunoOption, PlanoTreinoOption } from '../../../../shared/vinculo-treinoAluno/vinculo-treinoAluno';
 import { AlunoService } from '../../../../core/services/aluno.service';
 import { VinculoService } from '../../../../core/services/vinculo.service';
+
+export interface AlunoVinculado {
+  id: number;
+  nome: string;
+  email: string;
+  dataInicio: string;
+}
 
 export interface TreinoViewModel {
   id: number;
   nome: string;
   descricao: string;
   nivel: string;
+  alunos: AlunoVinculado[];
+  expandido?: boolean;
 }
 
 @Component({
@@ -79,7 +88,7 @@ export class ListagemTreinosComponent implements OnInit {
     });
   }
 
-processarVinculo(payload: VinculoPayload): void {
+  processarVinculo(payload: VinculoPayload): void {
     this.salvandoVinculo = true;
     console.log('A enviar dados para a API...', payload);
 
@@ -125,7 +134,18 @@ processarVinculo(payload: VinculoPayload): void {
           id: item.idPlanoTreino ?? item.id ?? index + 1,
           nome: item.titulo ?? item.nome ?? 'Sem Título',
           descricao: item.descricao ?? 'Sem descrição informada',
-          nivel: this.formatarNivel(item.nivelRecomendado ?? item.nivel ?? '')
+          nivel: this.formatarNivel(item.nivelRecomendado ?? item.nivel ?? ''),
+          
+          // Mapeando os alunos diretamente da resposta da API em vez dos dados de exemplo
+          alunos: (item.alunosVinculados || []).map((aluno: any) => ({
+            id: aluno.id,
+            nome: aluno.nome,
+            email: aluno.email,
+            // Adicionado um fallback caso a API não retorne data de início nesta rota
+            dataInicio: aluno.dataInicio ?? 'Não informada' 
+          })),
+          
+          expandido: false 
         }));
 
         this.isLoading = false;
@@ -138,6 +158,20 @@ processarVinculo(payload: VinculoPayload): void {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  // DADOS DE EXEMPLO (temporário)
+  private alunosDeExemplo(posicao: number): AlunoVinculado[] {
+    const exemplos: AlunoVinculado[][] = [
+      [
+        { id: 1, nome: 'Maria Souza', email: 'maria@email.com', dataInicio: '01/11/2026' },
+        { id: 2, nome: 'João Lima', email: 'joao@email.com', dataInicio: '03/11/2026' }
+      ],
+      [
+        { id: 3, nome: 'Ana Costa', email: 'ana@email.com', dataInicio: '02/11/2026' }
+      ]
+    ];
+    return exemplos[posicao] ?? [];
   }
 
   private formatarNivel(valor: string): string {
@@ -186,12 +220,8 @@ processarVinculo(payload: VinculoPayload): void {
     }
   }
 
-  visualizarTreino(treino: TreinoViewModel): void {
-    alert(
-      `Treino: ${treino.nome}\n` +
-      `Grupo muscular: ${treino.descricao}\n` +
-      `Nível: ${treino.nivel}`
-    );
+  toggleExpandir(treino: TreinoViewModel): void {
+    treino.expandido = !treino.expandido;
   }
 
   editarTreino(treino: TreinoViewModel): void {

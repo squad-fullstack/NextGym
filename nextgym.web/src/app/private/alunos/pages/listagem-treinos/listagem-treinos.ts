@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { PlanoTreinoService, PlanoTreinoItem } from '../../../../core/services/plano-treino.service';
+import {  VinculoTreinoComponent,  VinculoPayload,  AlunoOption,  PlanoTreinoOption } from '../../../../shared/vinculo-treinoAluno/vinculo-treinoAluno';
+import { AlunoService } from '../../../../core/services/aluno.service';
+import { VinculoService } from '../../../../core/services/vinculo.service';
 
 export interface TreinoViewModel {
   id: number;
@@ -14,13 +17,15 @@ export interface TreinoViewModel {
 @Component({
   selector: 'app-listagem-treinos',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, VinculoTreinoComponent],
   templateUrl: './listagem-treinos.html',
   styleUrls: ['./listagem-treinos.css']
 })
 export class ListagemTreinosComponent implements OnInit {
   private planoTreinoService = inject(PlanoTreinoService);
+  private alunoService = inject(AlunoService);
   private cdr = inject(ChangeDetectorRef);
+  private vinculoService = inject(VinculoService);
 
   termoBusca = '';
   filtroNivel = '';
@@ -30,8 +35,70 @@ export class ListagemTreinosComponent implements OnInit {
 
   treinos: TreinoViewModel[] = [];
 
+  modalVinculoAberto = false;
+  salvandoVinculo = false;
+  
+  listaAlunosOpcoes: AlunoOption[] = [];
+  listaPlanosOpcoes: PlanoTreinoOption[] = [];
+
   ngOnInit(): void {
     this.carregarTreinos();
+  }
+
+  abrirModalVinculo(): void {
+    this.carregarDadosParaModal();
+    this.modalVinculoAberto = true;
+    this.cdr.detectChanges(); 
+  }
+
+  fecharModalVinculo(): void {
+    this.modalVinculoAberto = false;
+    this.cdr.detectChanges(); 
+  }
+
+  private carregarDadosParaModal(): void {
+    this.listaPlanosOpcoes = this.treinos.map(treino => ({
+      id: treino.id,
+      titulo: treino.nome
+    }));
+
+    this.alunoService.listarTodos().subscribe({
+      next: (dados: any) => {
+        const listaBruta = Array.isArray(dados) ? dados : (dados.content || dados.data || dados.alunos || []);
+        
+        this.listaAlunosOpcoes = listaBruta.map((aluno: any) => ({
+          id: aluno.id,
+          nome: aluno.nome
+        }));
+        
+        this.cdr.detectChanges(); 
+      },
+      error: (err: any) => {
+        console.error('Erro ao buscar alunos para o modal', err);
+      }
+    });
+  }
+
+processarVinculo(payload: VinculoPayload): void {
+    this.salvandoVinculo = true;
+    console.log('A enviar dados para a API...', payload);
+
+    this.vinculoService.vincular(payload).subscribe({
+      next: (resposta) => {
+        this.salvandoVinculo = false;
+        this.fecharModalVinculo();
+        
+        alert('Plano de treino vinculado com sucesso!'); 
+        this.cdr.detectChanges();
+      },
+      error: (erro) => {
+        this.salvandoVinculo = false;
+        console.error('Erro ao vincular plano:', erro);
+        
+        alert('Ocorreu um erro ao vincular o plano. Verifique a consola.');
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   carregarTreinos(): void {

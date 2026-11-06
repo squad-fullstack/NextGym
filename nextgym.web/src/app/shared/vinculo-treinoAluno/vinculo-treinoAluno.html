@@ -1,0 +1,126 @@
+<div
+  *ngIf="isOpen"
+  class="modal-backdrop"
+  (click)="fechar()"
+  tabindex="-1"
+  aria-hidden="true">
+</div>
+
+<div
+  *ngIf="isOpen"
+  class="modal-dialog-wrapper"
+  role="dialog"
+  aria-modal="true">
+  
+  <div class="modal-card" #modalContent (click)="$event.stopPropagation()">
+    <header class="modal-header">
+      <div class="modal-header-left">
+        <div class="icon-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+        </div>
+        <div>
+          <h2 id="modal-titulo" class="modal-title">Vincular plano de treino</h2>
+          <p id="modal-subtitulo" class="modal-subtitle">Selecione o aluno, o plano e o período de treino.</p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="btn-fechar"
+        aria-label="Fechar modal"
+        (click)="fechar()"
+        [disabled]="isSubmitting">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </header>
+
+    <form [formGroup]="formVinculo" (ngSubmit)="onSubmit()" novalidate class="modal-form">
+      <div class="form-group">
+        <label for="select-aluno" class="form-label">Aluno</label>
+        <div class="select-container">
+          <select
+            #primeiroCampo
+            id="select-aluno"
+            formControlName="idAluno"
+            class="form-control"
+            [class.input-error]="formVinculo.get('idAluno')?.touched && formVinculo.get('idAluno')?.invalid">
+            <option value="" disabled selected>Busque e selecione um aluno</option>
+            <option *ngFor="let aluno of alunos" [value]="aluno.id">
+              {{ aluno.nome }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="select-plano" class="form-label">Plano de treino</label>
+        <div class="select-container">
+          <select
+            id="select-plano"
+            formControlName="idPlano"
+            class="form-control"
+            [class.input-error]="formVinculo.get('idPlanoTreino')?.touched && formVinculo.get('idPlanoTreino')?.invalid">
+            <option value="" disabled selected>Selecione um plano de treino</option>
+            <option *ngFor="let plano of planos" [value]="plano.id">
+              {{ plano.titulo }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row-dates">
+        <div class="form-group flex-1">
+          <label for="data-inicio" class="form-label">Data de início</label>
+          <input
+            id="data-inicio"
+            type="date"
+            formControlName="dataInicio"
+            class="form-control"
+            [min]="hoje" 
+            [class.input-error]="formVinculo.get('dataInicio')?.touched && formVinculo.get('dataInicio')?.invalid">
+        </div>
+
+        <div class="form-group flex-1">
+          <label for="previsao-termino" class="form-label">Previsão de término</label>
+          <input
+            id="previsao-termino"
+            type="date"
+            formControlName="previsaoTermino"
+            class="form-control"
+            [min]="formVinculo.get('dataInicio')?.value || hoje"
+            [class.input-error]="(formVinculo.get('previsaoTermino')?.touched && formVinculo.get('previsaoTermino')?.invalid) || formVinculo.errors?.['dataInvalida']">
+        </div>
+      </div>
+      <div *ngIf="formVinculo.errors?.['dataInvalida'] && formVinculo.get('previsaoTermino')?.touched" class="text-danger-error" style="color: red; font-size: 12px; margin-top: -10px;">
+        A data de término deve ser posterior à data de início.
+      </div>
+
+      <div class="form-group">
+        <label for="observacoes" class="form-label">Observações</label>
+        <textarea
+          id="observacoes"
+          formControlName="observacoes"
+          rows="4"
+          placeholder="Adicione orientações ou informações sobre este vínculo..."
+          class="form-control textarea-field">
+        </textarea>
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn-cancelar" (click)="fechar()" [disabled]="isSubmitting">
+          CANCELAR
+        </button>
+        <button type="submit" class="btn-salvar" [disabled]="formVinculo.invalid || isSubmitting">
+          <span *ngIf="!isSubmitting">VINCULAR PLANO</span>
+          <span *ngIf="isSubmitting">PROCESSANDO...</span>
+        </button>
+      </footer>
+    </form>
+  </div>
+</div>

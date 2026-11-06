@@ -1,15 +1,14 @@
 <div class="alunos-container">
-
   <header class="alunos-header">
     <div class="header-info">
       <div class="breadcrumb">
-        Painel &gt; <span class="breadcrumb-active">Treinos</span>
+        Painel > <span class="breadcrumb-active">Treinos</span>
       </div>
 
       <h1 class="page-title">Gestão de Treinos</h1>
 
       <p class="page-subtitle">
-        Organize os planos de treino e consulte seus níveis e grupos musculares.
+        Organize os planos de treino e acompanhe os alunos vinculados a cada um.
       </p>
     </div>
 
@@ -19,15 +18,22 @@
         Sistema Online
       </div>
 
-      <a
-        routerLink="/treinos/cadastro-plano-treino"
-        class="btn-primary">
+      <button routerLink="/treinos/cadastro-plano-treino" class="btn-primary">
         <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M12 4v16m8-8H4"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
         Novo Treino
-      </a>
+      </button>
+
+      <button type="button" class="btn-primary" (click)="abrirModalVinculo()">
+        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          <line x1="19" x2="19" y1="8" y2="14" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          <line x1="22" x2="16" y1="11" y2="11" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </svg>
+        Vincular Aluno
+      </button>
     </div>
   </header>
 
@@ -67,91 +73,91 @@
     </div>
   </section>
 
-  <div class="table-card">
-    <div class="table-responsive">
-      <table class="data-table">
-
-        <thead>
-          <tr>
-            <th class="th-cell">Treino</th>
-            <th class="th-cell">Descrição</th>
-            <th class="th-cell">Nível</th>
-            <th class="th-cell">Status</th>
-            <th class="th-cell text-right">Ações</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngIf="isLoading">
-            <td colspan="5" class="empty-cell text-muted">
-              Carregando planos de treino...
-            </td>
-          </tr>
-
-          <tr *ngIf="!isLoading && errorMessage">
-            <td colspan="5" class="error-cell">
-              <p class="error-message">{{ errorMessage }}</p>
-              <button (click)="carregarTreinos()" class="btn-retry">
-                Tentar novamente
-              </button>
-            </td>
-          </tr>
-
-          <tr
-            *ngFor="let treino of treinosFiltrados"
-            class="table-row">
-
-            <td class="td-cell font-medium text-main">
-              {{ treino.nome }}
-            </td>
-
-            <td class="td-cell">
-              <div class="contact-treino">
-                {{ treino.descricao }}
-              </div>
-            </td>
-
-            <td class="td-cell">
-              <span
-                class="nivel-badge"
-                [ngClass]="classeNivel(treino.nivel)">
-                {{ treino.nivel || 'Não informado' }}
-              </span>
-            </td>
-
-            <td class="td-cell">
-              <span class="tag-status status-active">
-                Ativo
-              </span>
-            </td>
-
-            <td class="td-cell text-right">
-              <div class="acoes-treino">
-                <button
-                  type="button"
-                  class="btn-acao btn-editar"
-                  title="Editar treino"
-                  aria-label="Editar treino"
-                  (click)="editarTreino(treino)">
-                  <svg viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 20h9"/>
-                    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
-
-          <tr *ngIf="!isLoading && !errorMessage && treinosFiltrados.length === 0">
-            <td colspan="5" class="empty-cell text-muted">
-              Nenhum treino encontrado com os filtros informados.
-            </td>
-          </tr>
-
-        </tbody>
-      </table>
-    </div>
+  <div *ngIf="isLoading" class="grupo-aviso">
+    Carregando planos de treino...
   </div>
+
+  <div *ngIf="!isLoading && errorMessage" class="grupo-aviso grupo-erro">
+    <p class="error-message">{{ errorMessage }}</p>
+    <button (click)="carregarTreinos()" class="btn-retry">
+      Tentar novamente
+    </button>
+  </div>
+
+  <div class="grupos-lista">
+    <section *ngFor="let treino of treinosFiltrados" class="grupo-treino">
+
+      <div class="grupo-cabecalho">
+        <div class="grupo-info">
+          
+          <div class="grupo-titulo-linha" (click)="toggleExpandir(treino)" style="cursor: pointer; user-select: none; display: flex; align-items: center;">
+            <h2 class="grupo-titulo">{{ treino.nome }}</h2>
+            <span class="nivel-badge" [ngClass]="classeNivel(treino.nivel)">
+              {{ treino.nivel || 'Não informado' }}
+            </span>
+            
+            <svg *ngIf="treino.expandido" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
+              <path d="M18 15l-6-6-6 6"/> 
+            </svg>
+            <svg *ngIf="!treino.expandido" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
+              <path d="M6 9l6 6 6-6"/> 
+            </svg>
+          </div>
+
+          <p class="grupo-descricao">{{ treino.descricao }}</p>
+        </div>
+
+        <div class="grupo-acoes">
+          <button
+            type="button"
+            class="btn-acao btn-editar"
+            title="Editar treino"
+            aria-label="Editar treino"
+            (click)="editarTreino(treino)">
+            <svg viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/>
+              <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="grupo-alunos" *ngIf="treino.expandido">
+        <div class="grupo-alunos-titulo">
+          Alunos vinculados ({{ treino.alunos.length }})
+        </div>
+
+        <ul *ngIf="treino.alunos.length > 0" class="alunos-sublista">
+          <li *ngFor="let aluno of treino.alunos" class="aluno-item">
+            <div>
+              <div class="aluno-nome">{{ aluno.nome }}</div>
+              <div class="aluno-email">{{ aluno.email }}</div>
+            </div>
+          </li>
+        </ul>
+
+        <p *ngIf="treino.alunos.length === 0" class="sem-alunos">
+          Nenhum aluno vinculado a este treino.
+        </p>
+      </div>
+
+    </section>
+  </div>
+
+  <div
+    *ngIf="!isLoading && !errorMessage && treinosFiltrados.length === 0"
+    class="grupo-aviso">
+    Nenhum treino encontrado com os filtros informados.
+  </div>
+
+  <app-vinculo-treinoAluno
+    [isOpen]="modalVinculoAberto"
+    [alunos]="listaAlunosOpcoes"
+    [planos]="listaPlanosOpcoes"
+    [isSubmitting]="salvandoVinculo"
+    (close)="fecharModalVinculo()"
+    (submitForm)="processarVinculo($event)">
+  </app-vinculo-treinoAluno>
 </div>

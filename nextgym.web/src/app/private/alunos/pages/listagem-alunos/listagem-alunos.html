@@ -2,7 +2,7 @@
   <header class="alunos-header">
     <div class="header-info">
       <div class="breadcrumb">
-        Painel &gt; <span class="breadcrumb-active">Alunos</span>
+        Painel > <span class="breadcrumb-active">Alunos</span>
       </div>
       <h1 class="page-title">Gestão de Alunos</h1>
       <p class="page-subtitle">Consulte, filtre e gerencie os alunos cadastrados no sistema.</p>
@@ -13,11 +13,21 @@
         <span class="status-pulse"></span>
         Sistema Online
       </div>
+      
       <button routerLink="/alunos/cadastro-aluno" class="btn-primary">
         <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
         Novo Aluno
+      </button>
+      <button type="button" class="btn-primary" (click)="abrirModalVinculo()">
+        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          <line x1="19" x2="19" y1="8" y2="14" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          <line x1="22" x2="16" y1="11" y2="11" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </svg>
+        Vincular Treino
       </button>
     </div>
   </header>
@@ -58,6 +68,8 @@
           <tr>
             <th class="th-cell">Nome do Aluno</th>
             <th class="th-cell">Contato</th>
+            <th class="th-cell">Treino</th>
+
             <th class="th-cell">Nível</th>
             <th class="th-cell">Status</th>
             <th class="th-cell text-right">Ações</th>
@@ -95,9 +107,17 @@
               <div class="contact-phone">{{ aluno.telefone }}</div>
             </td>
 
+
+            <td class="td-cell">
+              <span class="text-main">
+               {{ $any(aluno).nomeTreino || $any(aluno).treino }}
+              </span>
+            </td>
+
+
             <td class="td-cell">
               <span class="level-badge capitalize">
-                {{ aluno.nivelExperiencia || 'Não informado' }}
+                {{ $any(aluno).nivelExperiencia || $any(aluno).nivel || 'Não informado' }}
               </span>
             </td>
 
@@ -107,7 +127,25 @@
               </span>
             </td>
 
+            
             <td class="td-cell text-right">
+              
+              <button 
+                type="button" 
+                class="btn-icon" 
+                title="Vincular Treino"
+                (click)="abrirModalVinculo()"
+                [attr.aria-label]="'Vincular treino para ' + aluno.nome">
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                  <line x1="19" x2="19" y1="8" y2="14" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                  <line x1="22" x2="16" y1="11" y2="11" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                </svg>
+              </button>
+
               <button (click)="deletarAluno(aluno.id)" title="Excluir aluno" class="btn-action-delete">
                 <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -125,4 +163,13 @@
       </table>
     </div>
   </div>
+
+  <app-vinculo-treinoAluno
+    [isOpen]="modalVinculoAberto"
+    [alunos]="listaAlunosOpcoes"
+    [planos]="listaPlanosOpcoes"
+    [isSubmitting]="salvandoVinculo"
+    (close)="fecharModalVinculo()"
+    (submitForm)="processarVinculo($event)">
+  </app-vinculo-treinoAluno>
 </div>

@@ -74,7 +74,8 @@
             formControlName="telefone" 
             placeholder="(11) 98765-4321" 
             class="form-control"
-            [class.is-invalid]="isFieldInvalid('telefone')">
+            [class.is-invalid]="isFieldInvalid('telefone')"
+            oninput="if(this.value.length > 11) this.value = this.value.slice(0, 11);">
           <div *ngIf="isFieldInvalid('telefone')" class="error-text">
             <span>{{ getErrorMessage('telefone') }}</span>
           </div>
@@ -94,7 +95,8 @@
             formControlName="idade" 
             placeholder="24" 
             class="form-control"
-            [class.is-invalid]="isFieldInvalid('idade')">
+            [class.is-invalid]="isFieldInvalid('idade')"
+            oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);">
           <div *ngIf="isFieldInvalid('idade')" class="error-text">
             <span>{{ getErrorMessage('idade') }}</span>
           </div>
@@ -107,7 +109,8 @@
             formControlName="peso" 
             placeholder="78.5" 
             class="form-control"
-            [class.is-invalid]="isFieldInvalid('peso')">
+            [class.is-invalid]="isFieldInvalid('peso')"
+            oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
           <div *ngIf="isFieldInvalid('peso')" class="error-text">
             <span>{{ getErrorMessage('peso') }}</span>
           </div>
@@ -120,7 +123,8 @@
             formControlName="altura" 
             placeholder="1.75" 
             class="form-control"
-            [class.is-invalid]="isFieldInvalid('altura')">
+            [class.is-invalid]="isFieldInvalid('altura')"
+            oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
           <div *ngIf="isFieldInvalid('altura')" class="error-text">
             <span>{{ getErrorMessage('altura') }}</span>
           </div>
@@ -133,7 +137,8 @@
             formControlName="diasDisponiveisSemana" 
             placeholder="4" 
             class="form-control"
-            [class.is-invalid]="isFieldInvalid('diasDisponiveisSemana')">
+            [class.is-invalid]="isFieldInvalid('diasDisponiveisSemana')"
+            oninput="if(this.value.length > 1) this.value = this.value.slice(0, 1);">
           <div *ngIf="isFieldInvalid('diasDisponiveisSemana')" class="error-text">
             <span>{{ getErrorMessage('diasDisponiveisSemana') }}</span>
           </div>

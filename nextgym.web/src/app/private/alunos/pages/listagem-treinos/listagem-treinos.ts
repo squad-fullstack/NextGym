@@ -135,13 +135,10 @@ export class ListagemTreinosComponent implements OnInit {
           nome: item.titulo ?? item.nome ?? 'Sem Título',
           descricao: item.descricao ?? 'Sem descrição informada',
           nivel: this.formatarNivel(item.nivelRecomendado ?? item.nivel ?? ''),
-          
-          // Mapeando os alunos diretamente da resposta da API em vez dos dados de exemplo
           alunos: (item.alunosVinculados || []).map((aluno: any) => ({
             id: aluno.id,
             nome: aluno.nome,
             email: aluno.email,
-            // Adicionado um fallback caso a API não retorne data de início nesta rota
             dataInicio: aluno.dataInicio ?? 'Não informada' 
           })),
           
@@ -160,7 +157,6 @@ export class ListagemTreinosComponent implements OnInit {
     });
   }
 
-  // DADOS DE EXEMPLO (temporário)
   private alunosDeExemplo(posicao: number): AlunoVinculado[] {
     const exemplos: AlunoVinculado[][] = [
       [

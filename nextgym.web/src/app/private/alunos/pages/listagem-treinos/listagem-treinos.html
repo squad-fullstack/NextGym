@@ -90,19 +90,17 @@
       <div class="grupo-cabecalho">
         <div class="grupo-info">
           
-          <!-- Linha clicável com a seta de minimizar/expandir -->
           <div class="grupo-titulo-linha" (click)="toggleExpandir(treino)" style="cursor: pointer; user-select: none; display: flex; align-items: center;">
             <h2 class="grupo-titulo">{{ treino.nome }}</h2>
             <span class="nivel-badge" [ngClass]="classeNivel(treino.nivel)">
               {{ treino.nivel || 'Não informado' }}
             </span>
             
-            <!-- Seta Dinâmica -->
             <svg *ngIf="treino.expandido" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
-              <path d="M18 15l-6-6-6 6"/> <!-- Seta para cima -->
+              <path d="M18 15l-6-6-6 6"/> 
             </svg>
             <svg *ngIf="!treino.expandido" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
-              <path d="M6 9l6 6 6-6"/> <!-- Seta para baixo -->
+              <path d="M6 9l6 6 6-6"/> 
             </svg>
           </div>
 
@@ -126,7 +124,6 @@
         </div>
       </div>
 
-      <!-- O conteúdo inteiro dos alunos só aparece se "expandido" for true -->
       <div class="grupo-alunos" *ngIf="treino.expandido">
         <div class="grupo-alunos-titulo">
           Alunos vinculados ({{ treino.alunos.length }})
@@ -138,7 +135,6 @@
               <div class="aluno-nome">{{ aluno.nome }}</div>
               <div class="aluno-email">{{ aluno.email }}</div>
             </div>
-            <div class="aluno-data">Início: {{ aluno.dataInicio }}</div>
           </li>
         </ul>
 

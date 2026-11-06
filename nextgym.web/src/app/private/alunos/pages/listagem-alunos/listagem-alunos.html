@@ -68,6 +68,8 @@
           <tr>
             <th class="th-cell">Nome do Aluno</th>
             <th class="th-cell">Contato</th>
+            <th class="th-cell">Treino</th>
+
             <th class="th-cell">Nível</th>
             <th class="th-cell">Status</th>
             <th class="th-cell text-right">Ações</th>
@@ -105,9 +107,17 @@
               <div class="contact-phone">{{ aluno.telefone }}</div>
             </td>
 
+
+            <td class="td-cell">
+              <span class="text-main">
+               {{ $any(aluno).nomeTreino || $any(aluno).treino }}
+              </span>
+            </td>
+
+
             <td class="td-cell">
               <span class="level-badge capitalize">
-                {{ aluno.nivelExperiencia || 'Não informado' }}
+                {{ $any(aluno).nivelExperiencia || $any(aluno).nivel || 'Não informado' }}
               </span>
             </td>
 
@@ -117,6 +127,7 @@
               </span>
             </td>
 
+            
             <td class="td-cell text-right">
               
               <button 

@@ -113,6 +113,26 @@ export class ListagemAlunoComponent implements OnInit {
         } else if (data && Array.isArray(data.data)) {
           lista = data.data;
         }
+      
+        lista = lista.map((aluno: any) => {
+          
+          let nomeDoTreino = '';
+          const origemTreino = aluno.nomeTreino || aluno.treinoAtual;
+
+          if (origemTreino) {
+            if (typeof origemTreino === 'object') {
+              nomeDoTreino = origemTreino.nome || origemTreino.titulo || '';
+            } else {
+              nomeDoTreino = origemTreino;
+            }
+          }
+
+          return {
+            ...aluno,
+            nomeTreino: nomeDoTreino
+          };
+        });
+
 
         this.alunos = lista;
         this.alunosFiltrados = [...lista];

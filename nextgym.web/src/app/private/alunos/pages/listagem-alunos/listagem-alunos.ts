@@ -85,6 +85,8 @@ export class ListagemAlunoComponent implements OnInit {
         
         alert('Plano de treino vinculado com sucesso!'); 
         this.cdr.detectChanges();
+
+        this.carregarAlunos();
       },
       error: (erro) => {
         this.salvandoVinculo = false;

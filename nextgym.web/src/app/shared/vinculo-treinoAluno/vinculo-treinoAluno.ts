@@ -16,7 +16,7 @@ export interface VinculoPayload {
   idAluno: number | string;
   idPlano: number | string;
   dataInicio: string;
-  previsaoTermino: string;
+  dataPrevisaoFim: string;
   observacoes: string;
 }
 
@@ -105,7 +105,7 @@ export class VinculoTreinoComponent implements OnInit {
       idAluno: formVal.idAluno,
       idPlano: formVal.idPlano,
       dataInicio: formVal.dataInicio,
-      previsaoTermino: formVal.previsaoTermino,
+      dataPrevisaoFim: formVal.previsaoTermino,
       observacoes: (formVal.observacoes || '').trim()
     };
 

@@ -5,7 +5,7 @@
         Painel > <span class="breadcrumb-active">Treinos</span>
       </div>
 
-      <h1 class="page-title">Gestão de Treinos</h1>
+      <<h2 class="page-title">Gestão de Treinos</h2>
 
       <p class="page-subtitle">
         Organize os planos de treino e acompanhe os alunos vinculados a cada um.
@@ -91,7 +91,7 @@
         <div class="grupo-info">
           
           <div class="grupo-titulo-linha" (click)="toggleExpandir(treino)" style="cursor: pointer; user-select: none; display: flex; align-items: center;">
-            <h2 class="grupo-titulo">{{ treino.nome }}</h2>
+            <h3 class="grupo-titulo">{{ treino.nome }}</h3>
             <span class="nivel-badge" [ngClass]="classeNivel(treino.nivel)">
               {{ treino.nivel || 'Não informado' }}
             </span>
@@ -112,7 +112,7 @@
             type="button"
             class="btn-acao btn-editar"
             title="Editar treino"
-            aria-label="Editar treino"
+            [attr.aria-label]="'Editar treino ' + treino.nome"
             (click)="editarTreino(treino)">
             <svg viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2"

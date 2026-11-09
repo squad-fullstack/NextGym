@@ -190,4 +190,67 @@ export class ListagemAlunoComponent implements OnInit {
       });
     }
   }
+
+  obterClasseNivel(nivel: string): string {
+  if (!nivel) return 'level-nunca-treinou';
+  const nivelNormalizado = nivel.toUpperCase().trim();
+  switch (nivelNormalizado) {
+    case 'NUNCA_TREINOU':
+    case 'NUNCA TREINOU':
+      return 'level-nunca-treinou';
+    case 'INICIANTE':
+      return 'level-iniciante';
+    case 'INTERMEDIARIO':
+    case 'INTERMEDIÁRIO':
+      return 'level-intermediario';
+    case 'AVANCADO':
+    case 'AVANÇADO':
+      return 'level-avancado';
+    case 'ATLETA':
+      return 'level-atleta';
+    default:
+      return 'level-nunca-treinou';
+  }
+}
+
+obterIniciais(nome: string): string {
+    if (!nome) return '';
+    const partes = nome.trim().split(' ').filter(Boolean);
+    if (partes.length === 0) return '';
+    if (partes.length === 1) {
+      return partes[0].substring(0, 2).toUpperCase();
+    }
+    return (partes[0][0] + partes[partes.length - 1][0]).toUpperCase();
+  }
+
+
+  obterCorAvatar(nome: string): string {
+    if (!nome) return '#e2e8f0';
+    let hash = 0;
+    for (let i = 0; i < nome.length; i++) {
+      hash = nome.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    // Paleta de cores suaves e elegantes (tons pastéis/profissionais)
+    const cores = [
+      '#f1f5f9', '#fee2e2', '#fef3c7', '#ecfdf5', 
+      '#e0f2fe', '#ede9fe', '#fce7f3', '#ccfbf1'
+    ];
+    const index = Math.abs(hash) % cores.length;
+    return cores[index];
+  }
+
+  obterCorTextoAvatar(nome: string): string {
+    if (!nome) return '#57616e';
+    let hash = 0;
+    for (let i = 0; i < nome.length; i++) {
+      hash = nome.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const coresTexto = [
+      '#334155', '#a85b5b', '#92400e', '#3f8571', 
+      '#3488b5', '#5b21b6', '#a04368', '#115e59'
+    ];
+    const index = Math.abs(hash) % coresTexto.length;
+    return coresTexto[index];
+  }
+  
 }

@@ -5,8 +5,7 @@
         Painel > <span class="breadcrumb-active">Treinos</span>
       </div>
 
-      <<h2 class="page-title">Gestão de Treinos</h2>
-
+      <h2 class="page-title">Gestão de Treinos</h2>
       <p class="page-subtitle">
         Organize os planos de treino e acompanhe os alunos vinculados a cada um.
       </p>
@@ -89,10 +88,10 @@
 
       <div class="grupo-cabecalho">
         <div class="grupo-info">
-          
           <div class="grupo-titulo-linha" (click)="toggleExpandir(treino)" style="cursor: pointer; user-select: none; display: flex; align-items: center;">
             <h3 class="grupo-titulo">{{ treino.nome }}</h3>
-            <span class="nivel-badge" [ngClass]="classeNivel(treino.nivel)">
+            
+            <span class="nivel-badge capitalize" [ngClass]="obterClasseNivel(treino.nivel)">
               {{ treino.nivel || 'Não informado' }}
             </span>
             
@@ -131,13 +130,27 @@
 
         <ul *ngIf="treino.alunos.length > 0" class="alunos-sublista">
           <li *ngFor="let aluno of treino.alunos" class="aluno-item">
-            <div>
-              <div class="aluno-nome">{{ aluno.nome }}</div>
-              <div class="aluno-email">{{ aluno.email }}</div>
+            <div class="aluno-info-container">
+              
+              <div class="contact-item">
+                <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                <span class="aluno-nome font-medium text-main">{{ aluno.nome }}</span>
+              </div>
+
+              <div class="contact-item" *ngIf="aluno.email">
+                <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                <span class="contact-email">{{ aluno.email }}</span>
+              </div>
+
             </div>
           </li>
         </ul>
 
+        
         <p *ngIf="treino.alunos.length === 0" class="sem-alunos">
           Nenhum aluno vinculado a este treino.
         </p>

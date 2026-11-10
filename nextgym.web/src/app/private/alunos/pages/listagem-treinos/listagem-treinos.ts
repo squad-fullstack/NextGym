@@ -249,4 +249,28 @@ export class ListagemTreinosComponent implements OnInit {
       }
     });
   }
+
+obterClasseNivel(nivel: string): string {
+    if (!nivel) return 'level-nunca-treinou';
+    const nivelNormalizado = nivel.toUpperCase().trim();
+
+    switch (nivelNormalizado) {
+      case 'NUNCA_TREINOU':
+      case 'NUNCA TREINOU':
+        return 'level-nunca-treinou';
+      case 'INICIANTE':
+        return 'level-iniciante';
+      case 'INTERMEDIARIO':
+      case 'INTERMEDIÁRIO':
+        return 'level-intermediario';
+      case 'AVANCADO':
+      case 'AVANÇADO':
+        return 'level-avancado';
+      case 'ATLETA':
+        return 'level-atleta';
+      default:
+        return 'level-nunca-treinou';
+    }
+  }
+  
 }

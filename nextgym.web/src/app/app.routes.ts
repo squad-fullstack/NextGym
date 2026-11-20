@@ -28,18 +28,24 @@ export const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadComponent: () => import('./private/home/pages/tela-inicial/tela-inicial').then(m => m.TelaInicialComponent)
+        loadComponent: () =>
+          import('./private/home/pages/tela-inicial/tela-inicial')
+            .then(m => m.TelaInicialComponent)
       },
       {
         path: 'alunos',
         children: [
           {
             path: 'listagem-alunos',
-            loadComponent: () => import('./private/alunos/pages/listagem-alunos/listagem-alunos').then(m => m.ListagemAlunoComponent)
+            loadComponent: () =>
+              import('./private/alunos/pages/listagem-alunos/listagem-alunos')
+                .then(m => m.ListagemAlunoComponent)
           },
           {
             path: 'cadastro-aluno',
-            loadComponent: () => import('./private/alunos/pages/matricula-aluno/matricula-aluno').then(m => m.MatriculaAlunoComponent)
+            loadComponent: () =>
+              import('./private/alunos/pages/matricula-aluno/matricula-aluno')
+                .then(m => m.MatriculaAlunoComponent)
           },
           {
             path: '',
@@ -70,14 +76,22 @@ export const routes: Routes = [
           }
         ]
       },
-
-{
-  path: 'equipamentos',
-  loadComponent: () =>
-    import('./private/alunos/pages/listagem-equipamentos/listagem-equipamentos')
-      .then(m => m.ListagemEquipamentosComponent)
-}
-
+      {
+        path: 'gestao',
+        children: [
+          {
+            path: 'equipamentos',
+            loadComponent: () =>
+              import('./private/alunos/pages/listagem-equipamentos/listagem-equipamentos')
+                .then(m => m.ListagemEquipamentosComponent)
+          },
+          {
+            path: '',
+            redirectTo: 'equipamentos',
+            pathMatch: 'full'
+          }
+        ]
+      }
     ]
   },
   {

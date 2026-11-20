@@ -69,7 +69,15 @@ export const routes: Routes = [
             pathMatch: 'full'
           }
         ]
-      }
+      },
+
+{
+  path: 'equipamentos',
+  loadComponent: () =>
+    import('./private/alunos/pages/listagem-equipamentos/listagem-equipamentos')
+      .then(m => m.ListagemEquipamentosComponent)
+}
+
     ]
   },
   {

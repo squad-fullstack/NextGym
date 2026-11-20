@@ -1,24 +1,31 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, HostListener, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Equipamento, EquipamentoService } from '../../../../core/services/equipamento.service';
-
+import {
+  Equipamento,
+  EquipamentoService,
+  EquipamentoPayload
+} from '../../../../core/services/equipamento.service';
 
 @Component({
   selector: 'app-listagem-equipamentos',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './listagem-equipamentos.html',
   styleUrls: ['./listagem-equipamentos.css']
 })
 export class ListagemEquipamentosComponent implements OnInit {
   private equipamentoService = inject(EquipamentoService);
+  private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
+
+  private readonly categoriasPadrao = ['SUPERIORES', 'INFERIORES', 'CARDIO', 'PESO_LIVRE'];
 
   equipamentos: Equipamento[] = [];
   equipamentosFiltrados: Equipamento[] = [];
   categorias: string[] = [];
+  categoriasModal: string[] = [...this.categoriasPadrao];
 
   termoBusca: string = '';
   filtroCategoria: string = '';
@@ -27,8 +34,31 @@ export class ListagemEquipamentosComponent implements OnInit {
   isLoading: boolean = false;
   errorMessage: string = '';
 
+  modalAberto: boolean = false;
+  salvando: boolean = false;
+  erroModal: string = '';
+  equipamentoEmEdicao: Equipamento | null = null;
+
+  formEquipamento: FormGroup = this.fb.group({
+    nome: ['', [Validators.required, Validators.minLength(2)]],
+    categoria: ['', Validators.required],
+    descricao: ['', Validators.required],
+    ativo: [true]
+  });
+
+  get modoEdicao(): boolean {
+    return this.equipamentoEmEdicao !== null;
+  }
+
   ngOnInit(): void {
     this.carregarEquipamentos();
+  }
+
+  @HostListener('document:keydown.escape')
+  aoPressionarEsc(): void {
+    if (this.modalAberto && !this.salvando) {
+      this.fecharModal();
+    }
   }
 
   carregarEquipamentos(): void {
@@ -42,8 +72,10 @@ export class ListagemEquipamentosComponent implements OnInit {
         this.equipamentos = lista;
         this.equipamentosFiltrados = [...lista];
         this.totalRegistros = resposta?.totalRegistros ?? lista.length;
-        this.categorias = [...new Set(lista.map((e) => e.categoria))].sort();
+        this.categorias = [...new Set(lista.map((e) => e.categoria).filter(Boolean))].sort();
+        this.categoriasModal = [...new Set([...this.categoriasPadrao, ...this.categorias])].sort();
 
+        this.aplicarFiltros();
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -70,5 +102,86 @@ export class ListagemEquipamentosComponent implements OnInit {
     });
 
     this.cdr.detectChanges();
+  }
+
+  abrirCadastro(): void {
+    this.equipamentoEmEdicao = null;
+    this.erroModal = '';
+
+    this.formEquipamento.reset({
+      nome: '',
+      categoria: '',
+      descricao: '',
+      ativo: true
+    });
+
+    this.modalAberto = true;
+    this.cdr.detectChanges();
+  }
+
+  editarEquipamento(equipamento: Equipamento): void {
+    this.equipamentoEmEdicao = equipamento;
+    this.erroModal = '';
+
+    this.formEquipamento.reset({
+      nome: equipamento.nome ?? '',
+      categoria: equipamento.categoria ?? '',
+      descricao: equipamento.descricao ?? '',
+      ativo: Boolean(equipamento.ativo)
+    });
+
+    this.modalAberto = true;
+    this.cdr.detectChanges();
+  }
+
+  fecharModal(): void {
+    if (this.salvando) return;
+
+    this.modalAberto = false;
+    this.equipamentoEmEdicao = null;
+    this.erroModal = '';
+    this.formEquipamento.reset({ nome: '', categoria: '', descricao: '', ativo: true });
+    this.cdr.detectChanges();
+  }
+
+  salvarEquipamento(): void {
+    if (this.formEquipamento.invalid || this.salvando) {
+      this.formEquipamento.markAllAsTouched();
+      return;
+    }
+
+    this.salvando = true;
+    this.erroModal = '';
+
+    const valores = this.formEquipamento.getRawValue();
+    const payload: EquipamentoPayload = {
+      nome: String(valores.nome).trim(),
+      categoria: String(valores.categoria).trim(),
+      descricao: String(valores.descricao).trim(),
+      ativo: Boolean(valores.ativo)
+    };
+
+    const requisicao$ = this.equipamentoEmEdicao?.id
+      ? this.equipamentoService.atualizar(this.equipamentoEmEdicao.id, payload)
+      : this.equipamentoService.cadastrar(payload);
+
+    requisicao$.subscribe({
+      next: () => {
+        this.salvando = false;
+        this.fecharModal();
+        this.carregarEquipamentos();
+      },
+      error: (err) => {
+        this.salvando = false;
+        this.erroModal =
+          err?.error?.mensagem ||
+          err?.error?.erro ||
+          (this.modoEdicao
+            ? 'Não foi possível atualizar o equipamento. Verifique os dados e tente novamente.'
+            : 'Não foi possível cadastrar o equipamento. Verifique os dados e tente novamente.');
+        console.error('Erro ao salvar equipamento:', err);
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

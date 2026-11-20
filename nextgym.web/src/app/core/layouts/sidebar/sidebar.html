@@ -3,7 +3,7 @@
     <div class="sidebar-top">
       <div class="brand-header">
         <div class="brand-icon-box">
-          <svg class="brand-icon" fill="currentColor" viewBox="0 0 24 24">
+          <svg class="brand-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 5a1 1 0 0 0-1 1v2H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h1v2a1 1 0 0 0 2 0v-2h1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H6V6a1 1 0 0 0-1-1zm12 0a1 1 0 0 0-1 1v2h-1a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1v2a1 1 0 0 0 2 0v-2h1a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-1V6a1 1 0 0 0-1-1zM8 11h8v2H8v-2z"/>
           </svg>
         </div>
@@ -13,14 +13,13 @@
         </div>
       </div>
 
-      <nav class="nav-list">
-        <!-- Home -->
-        <a routerLink="/home" 
+      <nav class="nav-list" aria-label="Menu principal">
+        <a routerLink="/home"
            routerLinkActive="nav-item-active"
            [routerLinkActiveOptions]="{ exact: true }"
            class="nav-item">
           <div class="nav-item-label">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
             Home
@@ -28,12 +27,11 @@
           <span class="active-indicator"></span>
         </a>
 
-        <!-- Alunos -->
-        <a routerLink="/alunos/listagem-alunos" 
-           routerLinkActive="nav-item-active" 
+        <a routerLink="/alunos/listagem-alunos"
+           routerLinkActive="nav-item-active"
            class="nav-item">
           <div class="nav-item-label">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
             </svg>
             Alunos
@@ -41,14 +39,26 @@
           <span class="active-indicator"></span>
         </a>
 
-        <a routerLink="/treinos/listagem-treinos" 
-          routerLinkActive="nav-item-active" 
-          class="nav-item">
+        <a routerLink="/treinos/listagem-treinos"
+           routerLinkActive="nav-item-active"
+           class="nav-item">
           <div class="nav-item-label">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
             </svg>
             Planos de Treino
+          </div>
+          <span class="active-indicator"></span>
+        </a>
+
+        <a routerLink="/gestao/equipamentos"
+           routerLinkActive="nav-item-active"
+           class="nav-item">
+          <div class="nav-item-label">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085"/>
+            </svg>
+            Equipamentos
           </div>
           <span class="active-indicator"></span>
         </a>
@@ -66,8 +76,8 @@
         </div>
       </div>
 
-      <button type="button" (click)="logout()" title="Encerrar sessão" class="btn-logout">
-        <svg class="logout-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <button type="button" (click)="logout()" title="Encerrar sessão" aria-label="Encerrar sessão" class="btn-logout">
+        <svg class="logout-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
         </svg>
       </button>

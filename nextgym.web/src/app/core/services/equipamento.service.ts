@@ -11,6 +11,20 @@ export interface Equipamento {
   criadoEm: string;
 }
 
+export interface AtualizarEquipamentoPayload {
+  nome: string;
+  categoria: string;
+  descricao: string;
+  ativo: boolean;
+}
+
+export interface EquipamentoPayload {
+  nome: string;
+  categoria: string;
+  descricao: string;
+  ativo: boolean;
+}
+
 export interface ListaEquipamentosResposta {
   equipamentos: Equipamento[];
   totalRegistros: number;
@@ -25,4 +39,12 @@ export class EquipamentoService {
   listar(): Observable<ListaEquipamentosResposta> {
     return this.http.get<ListaEquipamentosResposta>(this.baseUrl);
   }
+
+  cadastrar(payload: EquipamentoPayload): Observable<Equipamento> {
+  return this.http.post<Equipamento>(this.baseUrl, payload);
+}
+
+  atualizar(id: number, payload: AtualizarEquipamentoPayload): Observable<Equipamento> {
+    return this.http.put<Equipamento>(`${this.baseUrl}/${id}`, payload);
+}
 }

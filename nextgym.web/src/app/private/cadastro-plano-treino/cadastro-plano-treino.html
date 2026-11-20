@@ -1,24 +1,25 @@
 <div class="tipo-treino-container">
   <header class="tipo-treino-header">
     <div class="breadcrumb">
-      Painel &gt; <span class="breadcrumb-active">Cadastro de Treino</span>
+      Painel > <span class="breadcrumb-active">Cadastro de Treino</span>
     </div>
     <h1 class="page-title">Cadastro de Treino</h1>
-    <p class="page-subtitle">Cadastre o treino e defina o tipo e o nível recomendado.</p>
+    <p class="page-subtitle">Cadastre o treino e defina o tipo, o nível recomendado e os equipamentos.</p>
   </header>
 
   <section class="form-card">
-    <div *ngIf="successMessage" class="alert-success">
+    <div *ngIf="successMessage" class="alert-success" role="status">
       {{ successMessage }}
     </div>
-    <div *ngIf="errorMessage" class="alert-error">
+    <div *ngIf="errorMessage" class="alert-error" role="alert">
       {{ errorMessage }}
     </div>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container" novalidate>
       <div class="form-field">
-        <label class="label">Tipo de Treino</label>
+        <label for="tipo-treino" class="label">Tipo de Treino</label>
         <select
+          id="tipo-treino"
           formControlName="tipoTreino"
           class="input-text"
           [class.input-error]="campoInvalido('tipoTreino')">
@@ -33,8 +34,9 @@
       </div>
 
       <div class="form-field">
-        <label class="label">Título</label>
+        <label for="titulo-treino" class="label">Título</label>
         <input
+          id="titulo-treino"
           type="text"
           formControlName="titulo"
           placeholder="Informe o título do treino"
@@ -48,8 +50,9 @@
       </div>
 
       <div class="form-field">
-        <label class="label">Descrição</label>
+        <label for="descricao-treino" class="label">Descrição</label>
         <textarea
+          id="descricao-treino"
           formControlName="descricao"
           placeholder="Descreva o treino"
           class="input-text textarea"
@@ -63,8 +66,9 @@
       </div>
 
       <div class="form-field">
-        <label class="label">Nível Recomendado</label>
+        <label for="nivel-recomendado" class="label">Nível Recomendado</label>
         <select
+          id="nivel-recomendado"
           formControlName="nivelRecomendado"
           class="input-text"
           [class.input-error]="campoInvalido('nivelRecomendado')">
@@ -78,17 +82,63 @@
         </span>
       </div>
 
+      <fieldset class="form-field equipamentos-box">
+        <div class="equipamentos-top">
+          <legend class="label">Equipamentos do Treino</legend>
+          <span class="equipamentos-badge" aria-live="polite">
+            {{ equipamentosSelecionados.length }} selecionado(s)
+          </span>
+        </div>
+
+        <input
+          type="text"
+          [value]="buscaEquipamento"
+          (input)="filtrarEquipamentos($event)"
+          placeholder="Buscar equipamento por nome ou categoria..."
+          aria-label="Buscar equipamento por nome ou categoria"
+          class="input-text">
+
+        <p *ngIf="carregandoEquipamentos" class="equipamentos-msg">
+          Carregando equipamentos...
+        </p>
+
+        <p *ngIf="!carregandoEquipamentos && erroEquipamentos" class="error-msg">
+          {{ erroEquipamentos }}
+        </p>
+
+        <div *ngIf="!carregandoEquipamentos && !erroEquipamentos && equipamentosFiltrados.length > 0" class="equipamentos-grid">
+          <label
+            *ngFor="let eq of equipamentosFiltrados"
+            class="equip-item"
+            [class.equip-selected]="isEquipamentoSelecionado(eq.id)"
+            [attr.for]="'equip-' + eq.id">
+            <input
+              type="checkbox"
+              [id]="'equip-' + eq.id"
+              [checked]="isEquipamentoSelecionado(eq.id)"
+              (change)="toggleEquipamento(eq.id)">
+            <span class="equip-info">
+              <span class="equip-nome">{{ eq.nome }}</span>
+              <span class="equip-cat">{{ eq.categoria }}</span>
+            </span>
+          </label>
+        </div>
+
+        <p *ngIf="!carregandoEquipamentos && !erroEquipamentos && equipamentosFiltrados.length === 0" class="equipamentos-msg">
+          Nenhum equipamento ativo encontrado.
+        </p>
+      </fieldset>
+
       <button type="submit" class="btn-primary" [disabled]="isSubmitting">
         {{ isSubmitting ? 'Salvando...' : 'Salvar Treino' }}
       </button>
 
-        <button 
-          type="button" 
-          routerLink="/treinos/listagem-treinos" 
-          class="btn-secondary">
-          Cancelar
-        </button>
-      
+      <button
+        type="button"
+        routerLink="/treinos/listagem-treinos"
+        class="btn-secondary">
+        Cancelar
+      </button>
     </form>
   </section>
 </div>

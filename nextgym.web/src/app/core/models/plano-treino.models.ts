@@ -15,8 +15,9 @@ export interface TipoTreinoOpcao {
 
 export interface PlanoTreinoPayload {
   idTipoTreino: number;
-  idProfessorCriador: number; 
+  idProfessorCriador: number;
   titulo: string;
   descricao: string;
   nivelRecomendado: string;
+  equipamentosIds: number[];
 }

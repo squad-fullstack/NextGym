@@ -1,8 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { PlanoTreinoService } from '../../core/services/plano-treino.service';
+import { Equipamento, EquipamentoService } from '../../core/services/equipamento.service';
 import { NIVEIS_RECOMENDADOS, TipoTreinoOpcao, PlanoTreinoPayload } from '../../core/models/plano-treino.models';
 
 export enum TipoTreinoEnum {
@@ -12,20 +13,20 @@ export enum TipoTreinoEnum {
 }
 
 export const TIPOS_TREINO_PADRAO: TipoTreinoOpcao[] = [
-  { 
-    id: TipoTreinoEnum.CALISTENIA, 
-    nome: 'Calistenia', 
-    descricao: 'Treinos focados no peso corporal e domínio do movimento' 
+  {
+    id: TipoTreinoEnum.CALISTENIA,
+    nome: 'Calistenia',
+    descricao: 'Treinos focados no peso corporal e domínio do movimento'
   },
-  { 
-    id: TipoTreinoEnum.HIPERTROFIA, 
-    nome: 'Hipertrofia', 
-    descricao: 'Treinos voltados para hipertrofia e ganho de massa' 
+  {
+    id: TipoTreinoEnum.HIPERTROFIA,
+    nome: 'Hipertrofia',
+    descricao: 'Treinos voltados para hipertrofia e ganho de massa'
   },
-  { 
-    id: TipoTreinoEnum.EMAGRECIMENTO, 
-    nome: 'Emagrecimento', 
-    descricao: 'Treinos com foco em queima calórica e condicionamento' 
+  {
+    id: TipoTreinoEnum.EMAGRECIMENTO,
+    nome: 'Emagrecimento',
+    descricao: 'Treinos com foco em queima calórica e condicionamento'
   }
 ];
 
@@ -40,12 +41,21 @@ export class CadastroPlanoTreinoComponent implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private planoTreinoService = inject(PlanoTreinoService);
+  private equipamentoService = inject(EquipamentoService);
+  private cdr = inject(ChangeDetectorRef);
 
   readonly LIMITE_TITULO = 100;
   readonly LIMITE_DESCRICAO = 250;
 
   niveis = NIVEIS_RECOMENDADOS;
   tipos: TipoTreinoOpcao[] = TIPOS_TREINO_PADRAO;
+
+  equipamentosDisponiveis: Equipamento[] = [];
+  equipamentosFiltrados: Equipamento[] = [];
+  equipamentosSelecionados: number[] = [];
+  buscaEquipamento = '';
+  carregandoEquipamentos = false;
+  erroEquipamentos = '';
 
   isSubmitting = false;
   errorMessage = '';
@@ -59,16 +69,68 @@ export class CadastroPlanoTreinoComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.carregarTiposTreino();
+    this.carregarEquipamentos();
+  }
+
+  private carregarTiposTreino(): void {
     this.planoTreinoService.listarTipos().subscribe({
       next: (lista) => {
         if (lista && lista.length > 0) {
           this.tipos = lista;
+          this.cdr.detectChanges();
         }
       },
       error: (err: any) => {
         console.warn('API indisponível, utilizando tipos padrão locais:', err);
       }
     });
+  }
+
+  carregarEquipamentos(): void {
+    this.carregandoEquipamentos = true;
+    this.erroEquipamentos = '';
+
+    this.equipamentoService.listar().subscribe({
+      next: (resposta) => {
+        const lista = (resposta?.equipamentos ?? []).filter((e) => e.ativo);
+        this.equipamentosDisponiveis = lista;
+        this.equipamentosFiltrados = [...lista];
+        this.carregandoEquipamentos = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.erroEquipamentos = 'Não foi possível carregar os equipamentos.';
+        this.carregandoEquipamentos = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  filtrarEquipamentos(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.buscaEquipamento = input.value;
+    const termo = this.buscaEquipamento.trim().toLowerCase();
+
+    this.equipamentosFiltrados = this.equipamentosDisponiveis.filter((eq) =>
+      String(eq.nome || '').toLowerCase().includes(termo) ||
+      String(eq.categoria || '').toLowerCase().includes(termo)
+    );
+  }
+
+  toggleEquipamento(id?: number): void {
+    if (id == null) return;
+
+    const numId = Number(id);
+    const jaSelecionado = this.equipamentosSelecionados.includes(numId);
+
+    this.equipamentosSelecionados = jaSelecionado
+      ? this.equipamentosSelecionados.filter((item) => item !== numId)
+      : [...this.equipamentosSelecionados, numId];
+  }
+
+  isEquipamentoSelecionado(id?: number): boolean {
+    return id != null && this.equipamentosSelecionados.includes(Number(id));
   }
 
   idDoTipo(tipo: TipoTreinoOpcao): number {
@@ -111,8 +173,8 @@ export class CadastroPlanoTreinoComponent implements OnInit {
     }
 
     const idProfessor = Number(
-      localStorage.getItem('usuario_id') || 
-      localStorage.getItem('id') || 
+      localStorage.getItem('usuario_id') ||
+      localStorage.getItem('id') ||
       localStorage.getItem('userId')
     );
 
@@ -130,7 +192,8 @@ export class CadastroPlanoTreinoComponent implements OnInit {
       idProfessorCriador: idProfessor,
       titulo: this.form.value.titulo.trim(),
       descricao: this.form.value.descricao.trim(),
-      nivelRecomendado: this.form.value.nivelRecomendado
+      nivelRecomendado: this.form.value.nivelRecomendado,
+      equipamentosIds: this.equipamentosSelecionados
     };
 
     this.planoTreinoService.criar(payload).subscribe({
@@ -138,13 +201,20 @@ export class CadastroPlanoTreinoComponent implements OnInit {
         this.isSubmitting = false;
         this.successMessage = 'Plano de treino cadastrado com sucesso!';
         this.form.reset({ tipoTreino: '', titulo: '', descricao: '', nivelRecomendado: '' });
-  
+        this.equipamentosSelecionados = [];
+        this.buscaEquipamento = '';
+
         this.router.navigate(['/treinos/listagem-treinos']);
       },
       error: (err: any) => {
         console.error('Erro ao cadastrar plano de treino:', err);
         this.isSubmitting = false;
-        this.errorMessage = err?.error?.message || 'Erro ao cadastrar plano de treino. Verifique os dados preenchidos.';
+        this.errorMessage =
+          err?.error?.mensagem ||
+          err?.error?.message ||
+          err?.error?.erro ||
+          'Erro ao cadastrar plano de treino. Verifique os dados preenchidos.';
+        this.cdr.detectChanges();
       }
     });
   }
